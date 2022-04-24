@@ -2,12 +2,11 @@ package fr.croix_rouge.formation_pse.infrastructure.primary;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
-import fr.croix_rouge.formation_pse.infrastructure.primary.dto.UserAuthenticationRequest;
 import fr.croix_rouge.formation_pse.infrastructure.primary.dto.UserAuthenticationResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,11 +20,11 @@ public class UserController {
     this.userRepository = userRepository;
   }
 
-  @PostMapping("/authenticate")
-  public ResponseEntity<UserAuthenticationResponse> authenticate(@RequestBody UserAuthenticationRequest authenticationRequest) {
-    PseUser user = userRepository.findByNivol(authenticationRequest.getNivol());
+  @GetMapping("/authenticate")
+  public ResponseEntity<UserAuthenticationResponse> authenticate(Authentication authentication) {
+    PseUser user = userRepository.findByNivol(authentication.getName());
     if(user == null) {
-      throw new UsernameNotFoundException(String.format("User %s not found", authenticationRequest.getNivol()));
+      throw new UsernameNotFoundException(String.format("User %s not found", authentication.getName()));
     }
     return ResponseEntity.ok(new UserAuthenticationResponse(user));
   }
