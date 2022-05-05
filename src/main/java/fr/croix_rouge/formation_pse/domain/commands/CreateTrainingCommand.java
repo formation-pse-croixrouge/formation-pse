@@ -2,6 +2,7 @@ package fr.croix_rouge.formation_pse.domain.commands;
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.Training;
 
 import java.time.LocalDate;
 
@@ -13,13 +14,17 @@ public class CreateTrainingCommand {
   private final int addressPostalCode;
   private final String addressCity;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, int addressPostalCode, String addressCity) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
     this.addressLabel = addressLabel;
     this.addressPostalCode = addressPostalCode;
     this.addressCity = addressCity;
+  }
+
+  public Training toDomain() {
+    return new Training(null, startDate, endDate, new Address(addressLabel, addressPostalCode, addressCity), user);
   }
 
   public PseUser getUser() {

@@ -6,11 +6,11 @@ import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entitie
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PseUserAdapter implements PseUserRepository {
+public class PseUserDbAdapter implements PseUserRepository {
 
   private final PseUserDao dao;
 
-  public PseUserAdapter(PseUserDao dao) {
+  public PseUserDbAdapter(PseUserDao dao) {
     this.dao = dao;
   }
 

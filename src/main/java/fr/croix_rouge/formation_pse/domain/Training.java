@@ -36,4 +36,8 @@ public class Training {
   public PseUser getCreatedBy() {
     return createdBy;
   }
+
+  public void calculateNextStartDate() {
+
+  }
 }
