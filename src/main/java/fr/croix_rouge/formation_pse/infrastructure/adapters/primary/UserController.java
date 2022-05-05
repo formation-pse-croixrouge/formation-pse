@@ -1,8 +1,8 @@
-package fr.croix_rouge.formation_pse.infrastructure.primary;
+package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
-import fr.croix_rouge.formation_pse.infrastructure.primary.dto.UserAuthenticationResponse;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.UserAuthenticationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

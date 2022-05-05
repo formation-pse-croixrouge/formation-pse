@@ -1,4 +1,4 @@
-package fr.croix_rouge.formation_pse.infrastructure.secondary.db.entities;
+package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
 

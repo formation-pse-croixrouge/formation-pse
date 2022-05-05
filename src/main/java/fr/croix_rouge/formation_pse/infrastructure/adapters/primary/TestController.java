@@ -1,4 +1,4 @@
-package fr.croix_rouge.formation_pse.infrastructure.primary;
+package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
