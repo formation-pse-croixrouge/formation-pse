@@ -27,9 +27,9 @@ public class TrainingController {
 
   @PostMapping("")
   public ResponseEntity<String> createTraining(@RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
-      PseUser user = userRepository.findByNivol(authentication.getName());
-      CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
-      createTrainingUseCase.create(createTrainingCommand);
-      return new ResponseEntity<>("Training created successfully.", HttpStatus.CREATED);
+    PseUser user = userRepository.findByNivol(authentication.getName());
+    CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
+    createTrainingUseCase.create(createTrainingCommand);
+    return new ResponseEntity<>("Training created successfully.", HttpStatus.CREATED);
   }
 }
