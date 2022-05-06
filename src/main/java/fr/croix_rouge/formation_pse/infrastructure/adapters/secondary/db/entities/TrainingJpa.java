@@ -16,25 +16,45 @@ public class TrainingJpa {
   @Column(name = "START_DATE")
   private LocalDate startDate;
 
-  public Long getId() {
-    return id;
-  }
+  @Column(name = "END_DATE")
+  private LocalDate endDate;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+  @Column(name = "ADDRESS_LABEL")
+  private String addressLabel;
 
-  public LocalDate getStartDate() {
-    return startDate;
-  }
+  @Column(name = "ADDRESS_POSTAL_CODE")
+  private Integer addressPostalCode;
+
+  @Column(name = "ADDRESS_CITY")
+  private String addressCity;
 
   public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public void setAddressLabel(String addressLabel) {
+    this.addressLabel = addressLabel;
+  }
+
+  public void setAddressPostalCode(Integer addressPostalCode) {
+    this.addressPostalCode = addressPostalCode;
+  }
+
+  public void setAddressCity(String addressCity) {
+    this.addressCity = addressCity;
+  }
+
   public static TrainingJpa fromDomain(Training training) {
     TrainingJpa trainingJpa = new TrainingJpa();
     trainingJpa.setStartDate(training.getStartDate());
+    trainingJpa.setEndDate(training.getEndDate());
+    trainingJpa.setAddressLabel(training.getAddressLabel());
+    trainingJpa.setAddressPostalCode(training.getAddressPostalCode());
+    trainingJpa.setAddressCity(training.getAddressCity());
     return trainingJpa;
   }
 }
