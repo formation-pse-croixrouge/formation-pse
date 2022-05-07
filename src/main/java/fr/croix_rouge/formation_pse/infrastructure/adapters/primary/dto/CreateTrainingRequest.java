@@ -12,8 +12,11 @@ import java.time.LocalDate;
 
 public class CreateTrainingRequest {
 
+  @NotNull
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate startDate;
+
+  @NotNull
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate endDate;
   @NotNull(message = "The address is required.")
