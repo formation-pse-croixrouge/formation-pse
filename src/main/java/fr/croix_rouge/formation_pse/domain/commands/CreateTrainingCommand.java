@@ -4,6 +4,7 @@ import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.exceptions.TrainingException;
+
 import java.time.LocalDate;
 
 public class CreateTrainingCommand {
