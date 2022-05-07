@@ -3,6 +3,7 @@ package fr.croix_rouge.formation_pse.domain.commands;
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Training;
+import fr.croix_rouge.formation_pse.domain.exceptions.TrainingException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
@@ -21,6 +22,9 @@ public class CreateTrainingCommand {
   private final String addressCity;
 
   public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, String addressPostalCode, String addressCity) {
+    if (startDate.isAfter(endDate)) {
+      throw new TrainingException("Start date is after end date.");
+    }
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
