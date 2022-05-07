@@ -1,16 +1,16 @@
-package fr.croix_rouge.formation_pse.infrastructure.secondary.db;
+package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
-import fr.croix_rouge.formation_pse.infrastructure.secondary.db.entities.PseUserJpa;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.PseUserJpa;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PseUserAdapter implements PseUserRepository {
+public class PseUserDbAdapter implements PseUserRepository {
 
   private final PseUserDao dao;
 
-  public PseUserAdapter(PseUserDao dao) {
+  public PseUserDbAdapter(PseUserDao dao) {
     this.dao = dao;
   }
 
