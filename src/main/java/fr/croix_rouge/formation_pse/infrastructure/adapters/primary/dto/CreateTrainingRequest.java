@@ -16,7 +16,7 @@ public class CreateTrainingRequest {
   private LocalDate startDate;
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate endDate;
-  @NotNull
+  @NotNull(message = "The address is required.")
   private AddressRequest address;
 
   public LocalDate getStartDate() {

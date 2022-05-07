@@ -1,9 +1,8 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.*;
 
 public class AddressRequest {
   @NotBlank(message = "The city is required.")
@@ -12,8 +11,8 @@ public class AddressRequest {
   @NotBlank(message = "The label is required.")
   private String label;
 
-  @NotNull(message = "The postal code is required")
-//  @Size(min = 6, max = 6, message = "The postal code format is invalid.")
+  @NotNull(message = "The postal code is required.")
+  @Pattern(regexp = "^\\d{5}$", message = "The postal code format is invalid.")
   private String postalCode;
 
   public String getCity() {

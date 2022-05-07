@@ -34,9 +34,6 @@ public class TrainingController {
   @PostMapping("")
   public ResponseEntity<String> createTraining(
           @Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
-//    if (result.hasErrors()) {
-//      return new ResponseEntity<>("PUETPUET", HttpStatus.BAD_REQUEST);
-//    }
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);
