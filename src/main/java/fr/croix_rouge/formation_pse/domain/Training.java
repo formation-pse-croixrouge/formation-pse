@@ -34,7 +34,9 @@ public class Training {
   }
 
   public String getAddressLabel() { return address.getLabel(); }
-  public Integer getAddressPostalCode() { return address.getPostalCode(); }
+
+  public String getAddressPostalCode() { return address.getPostalCode(); }
+
   public String getAddressCity() { return address.getCity(); }
 
   public PseUser getCreatedBy() {

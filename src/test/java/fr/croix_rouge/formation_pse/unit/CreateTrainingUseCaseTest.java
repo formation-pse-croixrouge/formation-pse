@@ -25,7 +25,7 @@ class CreateTrainingUseCaseTest {
       .startDate(LocalDate.now())
       .endDate(LocalDate.now().plusDays(1))
       .addressLabel("3, rue du renard")
-      .addressPostalCode(69100)
+      .addressPostalCode("69100")
       .addressCity("Villeurbanne")
       .build();
 

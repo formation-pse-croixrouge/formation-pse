@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/trainings")
 public class TrainingController {
@@ -26,7 +28,8 @@ public class TrainingController {
   }
 
   @PostMapping("")
-  public ResponseEntity<String> createTraining(@RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
+  public ResponseEntity<String> createTraining(
+          @Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);

@@ -2,9 +2,10 @@ package fr.croix_rouge.formation_pse.domain;
 
 public class Address {
   private final String label;
-  private final int postalCode;
+  private final String postalCode;
   private final String city;
-  public Address(String label, int postalCode, String city) {
+
+  public Address(String label, String postalCode, String city) {
     this.label = label;
     this.postalCode = postalCode;
     this.city = city;
@@ -14,7 +15,7 @@ public class Address {
     return label;
   }
 
-  public int getPostalCode() {
+  public String getPostalCode() {
     return postalCode;
   }
 

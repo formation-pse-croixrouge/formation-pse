@@ -23,7 +23,7 @@ public class TrainingJpa {
   private String addressLabel;
 
   @Column(name = "ADDRESS_POSTAL_CODE")
-  private Integer addressPostalCode;
+  private String addressPostalCode;
 
   @Column(name = "ADDRESS_CITY")
   private String addressCity;
@@ -40,7 +40,7 @@ public class TrainingJpa {
     this.addressLabel = addressLabel;
   }
 
-  public void setAddressPostalCode(Integer addressPostalCode) {
+  public void setAddressPostalCode(String addressPostalCode) {
     this.addressPostalCode = addressPostalCode;
   }
 
