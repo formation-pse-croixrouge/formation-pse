@@ -8,4 +8,6 @@ public interface TrainingRepository {
   void save(Training trainingToSave);
 
   Set<Training> all();
+
+  Training findById(Long trainingIdToRetrieve);
 }

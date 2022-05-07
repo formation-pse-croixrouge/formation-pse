@@ -37,9 +37,9 @@ class GetAllTrainingUseCaseTest {
 
     // THEN
     assertThat(retrievedTrainings).hasSize(3);
-    assertThat(retrievedTrainings.get(0).getStartDate()).isEqualTo(FIRST_OF_JANUARY);
-    assertThat(retrievedTrainings.get(1).getStartDate()).isEqualTo(FIRST_OF_FEBRUARY);
-    assertThat(retrievedTrainings.get(2).getStartDate()).isEqualTo(SECOND_OF_MARCH);
+    assertThat(retrievedTrainings.get(0)).isEqualTo(firstTraining);
+    assertThat(retrievedTrainings.get(1)).isEqualTo(secondTraining);
+    assertThat(retrievedTrainings.get(2)).isEqualTo(thirdTraining);
   }
 
   @Test

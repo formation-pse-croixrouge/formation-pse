@@ -2,9 +2,9 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake;
 
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
-
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,10 +17,17 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 
   @Override
+  public Training findById(Long trainingIdToRetrieve) {
+    return trainings.stream()
+      .filter(s -> Objects.equals(s.getId(), trainingIdToRetrieve))
+      .findFirst()
+      .orElse(null);
+  }
+
+  @Override
   public void save(Training trainingToSave) {
-    long randomId = generateRandomId();
     Training training = Training.builder()
-      .id(randomId)
+      .id(trainingToSave.getId() == null ? generateRandomId() : trainingToSave.getId())
       .startDate(trainingToSave.getStartDate())
       .endDate(trainingToSave.getEndDate())
       .address(trainingToSave.getAddress())

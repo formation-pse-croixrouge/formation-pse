@@ -1,10 +1,14 @@
 package fr.croix_rouge.formation_pse.domain;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
+@EqualsAndHashCode
+@ToString
 public class Address {
   private final String label;
   private final Integer postalCode;
