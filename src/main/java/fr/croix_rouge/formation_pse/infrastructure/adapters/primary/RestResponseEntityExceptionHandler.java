@@ -28,6 +28,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
   @ExceptionHandler(value = {BadRequestException.class})
   protected ResponseEntity<BaseResponse> handleBadRequestException(BadRequestException ex) {
+    // TODO user of badRequestResponse
     return  new ResponseEntity<>(new BaseResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 
