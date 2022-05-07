@@ -1,4 +1,4 @@
-package fr.croix_rouge.formation_pse.domain.commands;
+package fr.croix_rouge.formation_pse.usecases.createTraining;
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
@@ -24,7 +24,17 @@ public class CreateTrainingCommand {
   }
 
   public Training toDomain() {
-    return new Training(null, startDate, endDate, new Address(addressLabel, addressPostalCode, addressCity), user);
+    return Training.builder()
+      .startDate(startDate)
+      .endDate(endDate)
+      .address(Address.builder()
+        .label(addressLabel)
+        .postalCode(addressPostalCode)
+        .city(addressCity)
+        .build()
+      )
+      .createdBy(user)
+      .build();
   }
 
   public PseUser getUser() {

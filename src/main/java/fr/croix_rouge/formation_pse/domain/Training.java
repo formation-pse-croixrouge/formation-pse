@@ -1,7 +1,12 @@
 package fr.croix_rouge.formation_pse.domain;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
+@Getter
+@Builder
 public class Training {
   private final Long id;
   private final LocalDate startDate;
@@ -17,28 +22,7 @@ public class Training {
     this.createdBy = createdBy;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public LocalDate getStartDate() {
-    return startDate;
-  }
-
-  public LocalDate getEndDate() {
-    return endDate;
-  }
-
-  public Address getAddress() {
-    return address;
-  }
-
   public String getAddressLabel() { return address.getLabel(); }
   public Integer getAddressPostalCode() { return address.getPostalCode(); }
   public String getAddressCity() { return address.getCity(); }
-
-  public PseUser getCreatedBy() {
-    return createdBy;
-  }
-
 }

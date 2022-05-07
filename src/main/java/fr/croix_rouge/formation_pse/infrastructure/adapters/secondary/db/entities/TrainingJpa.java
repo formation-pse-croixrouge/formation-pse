@@ -1,5 +1,6 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities;
 
+import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Training;
 
 import javax.persistence.*;
@@ -56,5 +57,18 @@ public class TrainingJpa {
     trainingJpa.setAddressPostalCode(training.getAddressPostalCode());
     trainingJpa.setAddressCity(training.getAddressCity());
     return trainingJpa;
+  }
+
+  public Training toDomain() {
+    return Training.builder()
+      .id(id)
+      .startDate(startDate)
+      .endDate(endDate)
+      .address(Address.builder()
+        .label(addressLabel)
+        .city(addressCity)
+        .postalCode(addressPostalCode)
+        .build())
+      .build();
   }
 }

@@ -2,10 +2,10 @@ package fr.croix_rouge.formation_pse.unit;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
+import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.factories.PseUserTestFactory;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.inmemory.TrainingInMemoryRepository;
-import fr.croix_rouge.formation_pse.usecases.CreateTrainingUseCase;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainingRepository;
+import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCase;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CreateTrainingUseCaseTest {
 
-  TrainingInMemoryRepository trainingInMemoryRepository = new TrainingInMemoryRepository();
-  CreateTrainingUseCase sut = new CreateTrainingUseCase(trainingInMemoryRepository);
+  FakeTrainingRepository fakeTrainingRepository = new FakeTrainingRepository();
+  CreateTrainingUseCase sut = new CreateTrainingUseCase(fakeTrainingRepository);
 
   @Test
   void shouldCreateATraining() {
@@ -31,8 +31,8 @@ class CreateTrainingUseCaseTest {
 
     sut.create(trainingToCreateCommand);
 
-    assertThat(trainingInMemoryRepository.all()).hasSize(1);
-    Training savedTraining = trainingInMemoryRepository.all().iterator().next();
+    assertThat(fakeTrainingRepository.all()).hasSize(1);
+    Training savedTraining = fakeTrainingRepository.all().iterator().next();
     assertThat(savedTraining.getId()).isNotNull();
     assertThat(savedTraining.getStartDate()).isEqualTo(trainingToCreateCommand.getStartDate());
     assertThat(savedTraining.getEndDate()).isEqualTo(trainingToCreateCommand.getEndDate());
