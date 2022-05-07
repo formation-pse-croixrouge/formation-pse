@@ -3,7 +3,13 @@ package fr.croix_rouge.formation_pse.domain.commands;
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Training;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 public class CreateTrainingCommand {
@@ -11,10 +17,10 @@ public class CreateTrainingCommand {
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final String addressLabel;
-  private final int addressPostalCode;
+  private final String addressPostalCode;
   private final String addressCity;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, String addressPostalCode, String addressCity) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -43,7 +49,7 @@ public class CreateTrainingCommand {
     return addressLabel;
   }
 
-  public int getAddressPostalCode() {
+  public String getAddressPostalCode() {
     return addressPostalCode;
   }
 
@@ -60,7 +66,7 @@ public class CreateTrainingCommand {
     private LocalDate startDate;
     private LocalDate endDate;
     private String addressLabel;
-    private int addressPostalCode;
+    private String addressPostalCode;
     private String addressCity;
 
     public CreateTrainingCommandBuilder user(PseUser user) {
@@ -88,7 +94,7 @@ public class CreateTrainingCommand {
       return this;
     }
 
-    public CreateTrainingCommandBuilder addressPostalCode(int addressPostalCode) {
+    public CreateTrainingCommandBuilder addressPostalCode(String addressPostalCode) {
       this.addressPostalCode = addressPostalCode;
       return this;
     }

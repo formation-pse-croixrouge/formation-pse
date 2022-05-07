@@ -5,13 +5,19 @@ import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTrainingRequest;
 import fr.croix_rouge.formation_pse.usecases.CreateTrainingUseCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/trainings")
@@ -26,7 +32,11 @@ public class TrainingController {
   }
 
   @PostMapping("")
-  public ResponseEntity<String> createTraining(@RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
+  public ResponseEntity<String> createTraining(
+          @Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) {
+//    if (result.hasErrors()) {
+//      return new ResponseEntity<>("PUETPUET", HttpStatus.BAD_REQUEST);
+//    }
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);
