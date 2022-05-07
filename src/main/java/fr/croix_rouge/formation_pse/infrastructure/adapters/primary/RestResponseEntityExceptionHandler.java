@@ -1,6 +1,7 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 
 
+import fr.croix_rouge.formation_pse.domain.exceptions.BadRequestException;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.BadRequestResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.BaseResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.ErrorFieldResponse;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -19,21 +21,15 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-//  @ExceptionHandler(Exception.class)
-//  public final CustomResponse handleAllExceptions(Exception ex) {
-//    return new CustomResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
-//  }
+  @ExceptionHandler(value = {Exception.class})
+  protected ResponseEntity<BaseResponse> handleException(BadRequestException ex) {
+    return  new ResponseEntity<>(new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-//  @ExceptionHandler(value = {BadRequestException.class})
-//  protected CustomResponse handleBadRequestException(BadRequestException ex) {
-//    return new CustomResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-//  }
-
-//  @ExceptionHandler(MethodArgumentNotValidException.class)
-//  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-//    return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
-//    return new CustomResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-//  }
+  @ExceptionHandler(value = {BadRequestException.class})
+  protected ResponseEntity<BaseResponse> handleBadRequestException(BadRequestException ex) {
+    return  new ResponseEntity<>(new BaseResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
+  }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
