@@ -17,7 +17,7 @@ public class CreateTrainingCommand {
 
   public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, String addressPostalCode, String addressCity) {
     if (startDate.isAfter(endDate)) {
-      throw new BadRequestException("Start date is after end date.");
+      throw new BadRequestException("Start date is after end date.", "startDate, endDate");
     }
     this.user = user;
     this.startDate = startDate;

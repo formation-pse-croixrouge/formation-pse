@@ -5,8 +5,6 @@ import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 

@@ -18,4 +18,8 @@ public class BadRequestResponse {
   public void setErrorFields(List<ErrorFieldResponse> errorFields) {
     this.errorFields = errorFields;
   }
+
+  public void addErrorField(ErrorFieldResponse errorField) {
+    this.errorFields.add(errorField);
+  }
 }

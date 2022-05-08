@@ -32,7 +32,6 @@ public class TrainingController {
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);
-
     return new BaseResponse(HttpStatus.CREATED.value(), "Training created.");
   }
 }
