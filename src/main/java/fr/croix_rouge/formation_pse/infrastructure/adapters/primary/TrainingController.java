@@ -8,6 +8,7 @@ import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTr
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.BaseResponse;
 import fr.croix_rouge.formation_pse.usecases.CreateTrainingUseCase;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,11 @@ public class TrainingController {
   }
 
   @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public BaseResponse createTraining(@Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) throws BadRequestException {
+  public ResponseEntity<BaseResponse> createTraining(@Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) throws BadRequestException {
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);
-    return new BaseResponse(HttpStatus.CREATED.value(), "Training created.");
+    return new ResponseEntity<>(new BaseResponse(HttpStatus.CREATED.value(), "Training created."), HttpStatus.CREATED);
   }
 }
