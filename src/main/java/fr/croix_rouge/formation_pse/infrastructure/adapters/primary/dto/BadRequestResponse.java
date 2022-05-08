@@ -8,7 +8,7 @@ public class BadRequestResponse {
   private List<ErrorFieldResponse> errorFields;
 
   public BadRequestResponse() {
-    this.errorFields = new ArrayList<ErrorFieldResponse>();
+    this.errorFields = new ArrayList<>();
   }
 
   public List<ErrorFieldResponse> getErrorFields() {

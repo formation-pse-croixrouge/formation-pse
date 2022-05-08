@@ -14,11 +14,6 @@ public class BadRequestException extends RuntimeException {
     this.field = field;
   }
 
-  public BadRequestException(String message) {
-    super(message);
-    this.field = null;
-  }
-
   public String getField() {
     return field;
   }
