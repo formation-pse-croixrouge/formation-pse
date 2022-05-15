@@ -5,15 +5,16 @@ import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class CreateTrainingRequest {
 
+  @NotNull
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate startDate;
+
+  @NotNull
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate endDate;
   @NotNull(message = "The address is required.")
