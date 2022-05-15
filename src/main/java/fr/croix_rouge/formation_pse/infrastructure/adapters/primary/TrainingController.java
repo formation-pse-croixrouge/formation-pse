@@ -28,10 +28,10 @@ public class TrainingController {
 
   @PostMapping("")
   @ResponseBody
-  public ResponseEntity<BaseResponse> createTraining(@Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) throws BadRequestException {
+  public ResponseEntity<?> createTraining(@Valid @RequestBody CreateTrainingRequest trainingRequest, Authentication authentication) throws BadRequestException {
     PseUser user = userRepository.findByNivol(authentication.getName());
     CreateTrainingCommand createTrainingCommand = trainingRequest.toCommand(user);
     createTrainingUseCase.create(createTrainingCommand);
-    return new ResponseEntity<>(new BaseResponse(HttpStatus.CREATED.value(), "Training created."), HttpStatus.CREATED);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }
