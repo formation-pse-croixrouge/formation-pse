@@ -5,6 +5,10 @@ import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TrainingJpa;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class TrainingDbAdapter implements TrainingRepository {
 
@@ -18,5 +22,21 @@ public class TrainingDbAdapter implements TrainingRepository {
   public void save(Training trainingToSave) {
     TrainingJpa entityToSave = TrainingJpa.fromDomain(trainingToSave);
     dao.save(entityToSave);
+  }
+
+  @Override
+  public Set<Training> all() {
+    return dao.findAll().stream()
+      .map(TrainingJpa::toDomain)
+      .collect(Collectors.toSet());
+  }
+
+  @Override
+  public Training findById(Long trainingIdToRetrieve) {
+    Optional<TrainingJpa> trainingJpaOptional = dao.findById(trainingIdToRetrieve);
+    if(trainingJpaOptional.isEmpty()) {
+      return null;
+    }
+    return trainingJpaOptional.get().toDomain();
   }
 }

@@ -1,7 +1,7 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
-import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
+import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 
 import java.time.LocalDate;
 

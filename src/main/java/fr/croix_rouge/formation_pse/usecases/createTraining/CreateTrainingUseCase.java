@@ -1,7 +1,6 @@
-package fr.croix_rouge.formation_pse.usecases;
+package fr.croix_rouge.formation_pse.usecases.createTraining;
 
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.domain.commands.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 import org.springframework.stereotype.Service;
 
