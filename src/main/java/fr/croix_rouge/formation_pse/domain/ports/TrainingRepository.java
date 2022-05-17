@@ -10,4 +10,6 @@ public interface TrainingRepository {
   Set<Training> all();
 
   Training findById(Long trainingIdToRetrieve);
+
+  void delete(Long trainingId);
 }
