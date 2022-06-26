@@ -2,11 +2,8 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake;
 
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 
 public class FakeTrainingRepository implements TrainingRepository {
 
@@ -22,6 +19,15 @@ public class FakeTrainingRepository implements TrainingRepository {
       .filter(s -> Objects.equals(s.getId(), trainingIdToRetrieve))
       .findFirst()
       .orElse(null);
+  }
+
+  @Override
+  public void delete(Long trainingId) {
+    Training trainingToDelete = trainings.stream()
+      .filter(training -> Objects.equals(training.getId(), trainingId))
+      .findFirst()
+      .orElseThrow(() -> new RuntimeException("training not found"));
+    trainings.remove(trainingToDelete);
   }
 
   @Override

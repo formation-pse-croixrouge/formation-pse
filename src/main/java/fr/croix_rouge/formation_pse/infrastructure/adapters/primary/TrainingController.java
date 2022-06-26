@@ -7,6 +7,7 @@ import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingComman
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTrainingRequest;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCase;
+import fr.croix_rouge.formation_pse.usecases.deleteTraining.DeleteTrainingUseCase;
 import fr.croix_rouge.formation_pse.usecases.getAllTrainings.GetAllTrainingsUseCase;
 import fr.croix_rouge.formation_pse.usecases.getSingleTraining.GetSingleTrainingUseCase;
 import org.springframework.http.HttpStatus;
@@ -21,15 +22,18 @@ public class TrainingController {
   private final CreateTrainingUseCase createTrainingUseCase;
   private final GetAllTrainingsUseCase getAllTrainingsUseCase;
   private final GetSingleTrainingUseCase getSingleTrainingUseCase;
+  private final DeleteTrainingUseCase deleteTrainingUseCase;
   private final PseUserRepository userRepository;
 
   public TrainingController(CreateTrainingUseCase createTrainingUseCase,
                             GetAllTrainingsUseCase getAllTrainingsUseCase,
                             GetSingleTrainingUseCase getSingleTrainingUseCase,
+                            DeleteTrainingUseCase deleteTrainingUseCase,
                             PseUserRepository userRepository) {
     this.createTrainingUseCase = createTrainingUseCase;
     this.getAllTrainingsUseCase = getAllTrainingsUseCase;
     this.getSingleTrainingUseCase = getSingleTrainingUseCase;
+    this.deleteTrainingUseCase = deleteTrainingUseCase;
     this.userRepository = userRepository;
   }
 
@@ -49,5 +53,11 @@ public class TrainingController {
   @GetMapping("/{id}")
   public SingleTrainingResponse getSingleTraining(@PathVariable Long id) {
     return SingleTrainingResponse.fromDomain(getSingleTrainingUseCase.handle(id));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteTraining(@PathVariable Long id) {
+    deleteTrainingUseCase.handle(id);
+    return ResponseEntity.ok().build();
   }
 }

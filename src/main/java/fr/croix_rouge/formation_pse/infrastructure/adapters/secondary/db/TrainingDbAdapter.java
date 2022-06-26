@@ -39,4 +39,9 @@ public class TrainingDbAdapter implements TrainingRepository {
     }
     return trainingJpaOptional.get().toDomain();
   }
+
+  @Override
+  public void delete(Long trainingId) {
+    dao.deleteById(trainingId);
+  }
 }

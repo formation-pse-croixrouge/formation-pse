@@ -2,12 +2,18 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entiti
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Training;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "TRAININGS")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TrainingJpa {
 
   @Id
@@ -29,34 +35,18 @@ public class TrainingJpa {
   @Column(name = "ADDRESS_CITY")
   private String addressCity;
 
-  public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
-  }
-
-  public void setEndDate(LocalDate endDate) {
-    this.endDate = endDate;
-  }
-
-  public void setAddressLabel(String addressLabel) {
-    this.addressLabel = addressLabel;
-  }
-
-  public void setAddressPostalCode(Integer addressPostalCode) {
-    this.addressPostalCode = addressPostalCode;
-  }
-
-  public void setAddressCity(String addressCity) {
-    this.addressCity = addressCity;
+  public Long getId() {
+    return id;
   }
 
   public static TrainingJpa fromDomain(Training training) {
-    TrainingJpa trainingJpa = new TrainingJpa();
-    trainingJpa.setStartDate(training.getStartDate());
-    trainingJpa.setEndDate(training.getEndDate());
-    trainingJpa.setAddressLabel(training.getAddressLabel());
-    trainingJpa.setAddressPostalCode(training.getAddressPostalCode());
-    trainingJpa.setAddressCity(training.getAddressCity());
-    return trainingJpa;
+    return TrainingJpa.builder()
+      .startDate(training.getStartDate())
+      .endDate(training.getEndDate())
+      .addressCity(training.getAddressCity())
+      .addressLabel(training.getAddressLabel())
+      .addressPostalCode(training.getAddressPostalCode())
+      .build();
   }
 
   public Training toDomain() {
