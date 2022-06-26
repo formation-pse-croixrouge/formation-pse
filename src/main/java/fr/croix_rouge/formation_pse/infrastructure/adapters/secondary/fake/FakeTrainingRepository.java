@@ -2,6 +2,7 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake;
 
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 
 import java.util.*;
 
@@ -28,6 +29,11 @@ public class FakeTrainingRepository implements TrainingRepository {
       .findFirst()
       .orElseThrow(() -> new RuntimeException("training not found"));
     trainings.remove(trainingToDelete);
+  }
+
+  @Override
+  public void update(UpdateTrainingCommand updateTrainingCommand) {
+    throw new RuntimeException("not implemented");
   }
 
   @Override

@@ -1,8 +1,10 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db;
 
 import fr.croix_rouge.formation_pse.domain.Training;
+import fr.croix_rouge.formation_pse.domain.exceptions.TrainingNotFoundException;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TrainingJpa;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -43,5 +45,15 @@ public class TrainingDbAdapter implements TrainingRepository {
   @Override
   public void delete(Long trainingId) {
     dao.deleteById(trainingId);
+  }
+
+  @Override
+  public void update(UpdateTrainingCommand updateTrainingCommand) {
+    TrainingJpa trainingToUpdate = dao.findById(updateTrainingCommand.getId()).orElseThrow(TrainingNotFoundException::new);
+    trainingToUpdate.setStartDate(updateTrainingCommand.getStartDate());
+    trainingToUpdate.setEndDate(updateTrainingCommand.getEndDate());
+    trainingToUpdate.setAddressCity(updateTrainingCommand.getAddress().getCity());
+    trainingToUpdate.setAddressLabel(updateTrainingCommand.getAddress().getLabel());
+    trainingToUpdate.setAddressPostalCode(updateTrainingCommand.getAddress().getPostalCode());
   }
 }

@@ -3,6 +3,9 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainingResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.SingleTrainingResponse;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.UpdateTrainingRequest;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingUseCase;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTrainingRequest;
@@ -24,17 +27,20 @@ public class TrainingController {
   private final GetSingleTrainingUseCase getSingleTrainingUseCase;
   private final DeleteTrainingUseCase deleteTrainingUseCase;
   private final PseUserRepository userRepository;
+  private final UpdateTrainingUseCase updateTrainingUseCase;
 
   public TrainingController(CreateTrainingUseCase createTrainingUseCase,
                             GetAllTrainingsUseCase getAllTrainingsUseCase,
                             GetSingleTrainingUseCase getSingleTrainingUseCase,
                             DeleteTrainingUseCase deleteTrainingUseCase,
-                            PseUserRepository userRepository) {
+                            PseUserRepository userRepository,
+                            UpdateTrainingUseCase updateTrainingUseCase) {
     this.createTrainingUseCase = createTrainingUseCase;
     this.getAllTrainingsUseCase = getAllTrainingsUseCase;
     this.getSingleTrainingUseCase = getSingleTrainingUseCase;
     this.deleteTrainingUseCase = deleteTrainingUseCase;
     this.userRepository = userRepository;
+    this.updateTrainingUseCase = updateTrainingUseCase;
   }
 
   @PostMapping("")
@@ -59,5 +65,12 @@ public class TrainingController {
   public ResponseEntity<Void> deleteTraining(@PathVariable Long id) {
     deleteTrainingUseCase.handle(id);
     return ResponseEntity.ok().build();
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateTraining(@PathVariable Long id, @RequestBody UpdateTrainingRequest updateTrainingRequest) {
+    UpdateTrainingCommand updateTrainingCommand = updateTrainingRequest.toCommand(id);
+    updateTrainingUseCase.handle(updateTrainingCommand);
+    return ResponseEntity.noContent().build();
   }
 }
