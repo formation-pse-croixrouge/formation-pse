@@ -3,16 +3,22 @@ package fr.croix_rouge.formation_pse.domain;
 import java.util.Objects;
 
 public class PseUser {
+  private final Long id;
   private final String nivol;
   private final String firstName;
   private final String lastName;
   private final String password;
 
-  public PseUser(String nivol, String firstName, String lastName, String password) {
+  public PseUser(Long id, String nivol, String firstName, String lastName, String password) {
+    this.id = id;
     this.nivol = nivol;
     this.firstName = firstName;
     this.lastName = lastName;
     this.password = password;
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getFirstName() {

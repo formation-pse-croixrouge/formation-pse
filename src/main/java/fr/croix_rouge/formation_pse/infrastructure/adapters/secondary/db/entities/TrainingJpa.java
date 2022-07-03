@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "TRAININGS")
@@ -37,6 +40,18 @@ public class TrainingJpa {
   @Column(name = "ADDRESS_CITY")
   private String addressCity;
 
+  @ManyToOne
+  @JoinColumn(name = "creator_id", nullable = false)
+  private PseUserJpa creator;
+
+  @ManyToMany(cascade = { CascadeType.MERGE })
+  @JoinTable(
+    name = "TRAININGS_USERS",
+    joinColumns = { @JoinColumn(name = "training_id") },
+    inverseJoinColumns = { @JoinColumn(name = "user_id") }
+  )
+  private Set<PseUserJpa> trainers;
+
   public Long getId() {
     return id;
   }
@@ -48,6 +63,11 @@ public class TrainingJpa {
       .addressCity(training.getAddressCity())
       .addressLabel(training.getAddressLabel())
       .addressPostalCode(training.getAddressPostalCode())
+      .trainers(training.getTrainers().stream()
+        .map(PseUserJpa::fromTrainer)
+        .collect(Collectors.toSet())
+      )
+      .creator(PseUserJpa.fromDomain(training.getCreatedBy()))
       .build();
   }
 
@@ -61,6 +81,8 @@ public class TrainingJpa {
         .city(addressCity)
         .postalCode(addressPostalCode)
         .build())
+      .trainers(trainers.stream().map(PseUserJpa::toTrainer).collect(Collectors.toSet()))
+      .createdBy(creator.toDomain())
       .build();
   }
 }

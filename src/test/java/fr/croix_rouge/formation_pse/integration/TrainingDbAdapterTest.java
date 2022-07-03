@@ -2,11 +2,13 @@ package fr.croix_rouge.formation_pse.integration;
 
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDao;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDbAdapter;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.PseUserJpa;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TrainingJpa;
 import fr.croix_rouge.formation_pse.utils.DbIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,10 +23,16 @@ class TrainingDbAdapterTest {
   @Autowired
   private TrainingDao dao;
 
+  @Autowired
+  private EntityManager entityManager;
+
   @Test
   void shouldDelete() {
     // GIVEN
-    TrainingJpa trainingJpa = TrainingJpa.builder().endDate(LocalDate.now()).build();
+    PseUserJpa aUser = createUser();
+    TrainingJpa trainingJpa = TrainingJpa.builder()
+      .creator(aUser)
+      .endDate(LocalDate.now()).build();
     TrainingJpa savedTraining = dao.save(trainingJpa);
 
     // WHEN
@@ -33,5 +41,10 @@ class TrainingDbAdapterTest {
     // THEN
     List<TrainingJpa> savedTrainings = dao.findAll();
     assertThat(savedTrainings).isEmpty();
+  }
+
+  private PseUserJpa createUser() {
+    entityManager.createNativeQuery("INSERT INTO USERS(first_name, last_name, nivol) VALUES ('John', 'Doe', 'A_NIVOL')").executeUpdate();
+    return entityManager.createQuery("Select user from PseUserJpa user", PseUserJpa.class).getSingleResult();
   }
 }

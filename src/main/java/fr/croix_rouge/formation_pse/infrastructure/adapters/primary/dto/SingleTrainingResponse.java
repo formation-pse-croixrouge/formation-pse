@@ -4,6 +4,10 @@ import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainersResponse.*;
 
 @Data
 public class SingleTrainingResponse {
@@ -13,6 +17,7 @@ public class SingleTrainingResponse {
   private String address;
   private Integer postalCode;
   private String city;
+  private Set<TrainerResponse> trainers;
 
   public static SingleTrainingResponse fromDomain(Training training) {
     SingleTrainingResponse response = new SingleTrainingResponse();
@@ -22,6 +27,7 @@ public class SingleTrainingResponse {
     response.address = training.getAddressLabel();
     response.postalCode = training.getAddressPostalCode();
     response.city = training.getAddressCity();
+    response.trainers = training.getTrainers().stream().map(TrainerResponse::fromDomain).collect(Collectors.toSet());
     return response;
   }
 }

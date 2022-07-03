@@ -1,7 +1,10 @@
 package fr.croix_rouge.formation_pse.unit;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
+import fr.croix_rouge.formation_pse.factories.TrainerTestFactory;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainerRepository;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.factories.PseUserTestFactory;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainingRepository;
@@ -9,17 +12,21 @@ import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCas
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+import static fr.croix_rouge.formation_pse.factories.TrainerTestFactory.aTrainer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CreateTrainingUseCaseTest {
 
   FakeTrainingRepository fakeTrainingRepository = new FakeTrainingRepository();
-  CreateTrainingUseCase sut = new CreateTrainingUseCase(fakeTrainingRepository);
+  FakeTrainerRepository fakeTrainerRepository = new FakeTrainerRepository();
+  CreateTrainingUseCase sut = new CreateTrainingUseCase(fakeTrainingRepository, fakeTrainerRepository);
 
   @Test
   void shouldCreateATraining() {
     PseUser user = PseUserTestFactory.organizer();
+    Trainer aTrainer = saveTrainer();
     CreateTrainingCommand trainingToCreateCommand = CreateTrainingCommand.builder()
       .user(user)
       .startDate(LocalDate.now())
@@ -27,6 +34,7 @@ class CreateTrainingUseCaseTest {
       .addressLabel("3, rue du renard")
       .addressPostalCode(69100)
       .addressCity("Villeurbanne")
+      .trainersNivol(Set.of(aTrainer.getNivol()))
       .build();
 
     sut.create(trainingToCreateCommand);
@@ -40,5 +48,11 @@ class CreateTrainingUseCaseTest {
     assertThat(savedTraining.getAddress().getCity()).isEqualTo(trainingToCreateCommand.getAddressCity());
     assertThat(savedTraining.getAddress().getPostalCode()).isEqualTo(trainingToCreateCommand.getAddressPostalCode());
     assertThat(savedTraining.getCreatedBy()).isEqualTo(trainingToCreateCommand.getUser());
+  }
+
+  private Trainer saveTrainer() {
+    Trainer trainer = aTrainer().build();
+    fakeTrainerRepository.save(trainer);
+    return trainer;
   }
 }

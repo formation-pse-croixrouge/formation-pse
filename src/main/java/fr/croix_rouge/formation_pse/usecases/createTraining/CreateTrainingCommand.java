@@ -2,28 +2,38 @@ package fr.croix_rouge.formation_pse.usecases.createTraining;
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
+import lombok.Builder;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
+@Builder
 public class CreateTrainingCommand {
   private final PseUser user;
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final String addressLabel;
-  private final int addressPostalCode;
+  private final Integer addressPostalCode;
   private final String addressCity;
+  private final Set<String> trainersNivol;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
     this.addressLabel = addressLabel;
     this.addressPostalCode = addressPostalCode;
     this.addressCity = addressCity;
+    this.trainersNivol = trainersNivol == null ? null : Set.copyOf(trainersNivol);
   }
 
-  public Training toDomain() {
+  public Training toDomain(Set<Trainer> trainers) {
     return Training.builder()
       .startDate(startDate)
       .endDate(endDate)
@@ -34,6 +44,7 @@ public class CreateTrainingCommand {
         .build()
       )
       .createdBy(user)
+      .trainers(trainers)
       .build();
   }
 
@@ -61,50 +72,7 @@ public class CreateTrainingCommand {
     return addressCity;
   }
 
-  public static CreateTrainingCommandBuilder builder() {
-    return new CreateTrainingCommandBuilder();
-  }
-
-  public static class CreateTrainingCommandBuilder {
-    private PseUser user;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String addressLabel;
-    private int addressPostalCode;
-    private String addressCity;
-
-    public CreateTrainingCommandBuilder user(PseUser user) {
-      this.user = user;
-      return this;
-    }
-
-    public CreateTrainingCommandBuilder startDate(LocalDate startDate) {
-      this.startDate = startDate;
-      return this;
-    }
-
-    public CreateTrainingCommandBuilder endDate(LocalDate endDate) {
-      this.endDate = endDate;
-      return this;
-    }
-
-    public CreateTrainingCommandBuilder addressLabel(String label) {
-      this.addressLabel = label;
-      return this;
-    }
-
-    public CreateTrainingCommandBuilder addressCity(String city) {
-      this.addressCity = city;
-      return this;
-    }
-
-    public CreateTrainingCommandBuilder addressPostalCode(int addressPostalCode) {
-      this.addressPostalCode = addressPostalCode;
-      return this;
-    }
-
-    public CreateTrainingCommand build() {
-      return new CreateTrainingCommand(user, startDate, endDate, addressLabel, addressPostalCode, addressCity);
-    }
+  public Set<String> getTrainersNivol() {
+    return trainersNivol;
   }
 }

@@ -44,6 +44,7 @@ public class FakeTrainingRepository implements TrainingRepository {
       .endDate(trainingToSave.getEndDate())
       .address(trainingToSave.getAddress())
       .createdBy(trainingToSave.getCreatedBy())
+      .trainers(trainingToSave.getTrainers())
       .build();
     trainings.add(training);
   }
@@ -60,3 +61,7 @@ public class FakeTrainingRepository implements TrainingRepository {
     return (long) (r.nextDouble() * range);
   }
 }
+
+// TODO : Ajouter formateurs à l'update de formations.
+// TODO : Ajouter participants à la création et update de formations.
+// TODO : Faire un endpoint de création de formateurs mais pas de front.
