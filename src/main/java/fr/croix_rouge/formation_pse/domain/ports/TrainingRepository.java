@@ -1,7 +1,6 @@
 package fr.croix_rouge.formation_pse.domain.ports;
 
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 
 import java.util.Set;
 
@@ -14,5 +13,5 @@ public interface TrainingRepository {
 
   void delete(Long trainingId);
 
-  void update(UpdateTrainingCommand updateTrainingCommand);
+  void update(Training training);
 }

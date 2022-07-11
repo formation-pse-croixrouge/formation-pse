@@ -58,6 +58,7 @@ public class TrainingJpa {
 
   public static TrainingJpa fromDomain(Training training) {
     return TrainingJpa.builder()
+      .id(training.getId())
       .startDate(training.getStartDate())
       .endDate(training.getEndDate())
       .addressCity(training.getAddressCity())

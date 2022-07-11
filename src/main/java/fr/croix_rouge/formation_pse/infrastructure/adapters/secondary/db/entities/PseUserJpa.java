@@ -26,8 +26,11 @@ public class PseUserJpa {
 
   @Column(unique = true, updatable = false, insertable = false)
   private String nivol;
+  @Column(updatable = false, insertable = false)
   private String password;
+  @Column(nullable = false)
   private String firstName;
+  @Column(nullable = false)
   private String lastName;
 
   public static PseUserJpa fromDomain(PseUser createdBy) {

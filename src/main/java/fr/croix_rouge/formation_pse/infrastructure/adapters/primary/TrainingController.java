@@ -1,6 +1,7 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.ports.TrainerRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainingResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.SingleTrainingResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.UpdateTrainingRequest;
@@ -28,19 +29,21 @@ public class TrainingController {
   private final DeleteTrainingUseCase deleteTrainingUseCase;
   private final PseUserRepository userRepository;
   private final UpdateTrainingUseCase updateTrainingUseCase;
+  private final TrainerRepository trainerRepository;
 
   public TrainingController(CreateTrainingUseCase createTrainingUseCase,
                             GetAllTrainingsUseCase getAllTrainingsUseCase,
                             GetSingleTrainingUseCase getSingleTrainingUseCase,
                             DeleteTrainingUseCase deleteTrainingUseCase,
                             PseUserRepository userRepository,
-                            UpdateTrainingUseCase updateTrainingUseCase) {
+                            UpdateTrainingUseCase updateTrainingUseCase, TrainerRepository trainerRepository) {
     this.createTrainingUseCase = createTrainingUseCase;
     this.getAllTrainingsUseCase = getAllTrainingsUseCase;
     this.getSingleTrainingUseCase = getSingleTrainingUseCase;
     this.deleteTrainingUseCase = deleteTrainingUseCase;
     this.userRepository = userRepository;
     this.updateTrainingUseCase = updateTrainingUseCase;
+    this.trainerRepository = trainerRepository;
   }
 
   @PostMapping("")
@@ -69,7 +72,7 @@ public class TrainingController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateTraining(@PathVariable Long id, @RequestBody UpdateTrainingRequest updateTrainingRequest) {
-    UpdateTrainingCommand updateTrainingCommand = updateTrainingRequest.toCommand(id);
+    UpdateTrainingCommand updateTrainingCommand = updateTrainingRequest.toCommand(id, trainerRepository);
     updateTrainingUseCase.handle(updateTrainingCommand);
     return ResponseEntity.noContent().build();
   }

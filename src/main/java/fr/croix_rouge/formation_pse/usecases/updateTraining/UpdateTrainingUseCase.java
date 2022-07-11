@@ -1,5 +1,6 @@
 package fr.croix_rouge.formation_pse.usecases.updateTraining;
 
+import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ public class UpdateTrainingUseCase {
 
   @Transactional
   public void handle(UpdateTrainingCommand updateTrainingCommand) {
-    trainingRepository.update(updateTrainingCommand);
+    Training training = trainingRepository.findById(updateTrainingCommand.getId());
+    training.update(updateTrainingCommand);
+    trainingRepository.update(training);
   }
 }

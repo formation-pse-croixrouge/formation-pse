@@ -1,5 +1,6 @@
 package fr.croix_rouge.formation_pse.domain;
 
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,11 +16,11 @@ import java.util.Set;
 @EqualsAndHashCode
 public class Training {
   private final Long id;
-  private final LocalDate startDate;
-  private final LocalDate endDate;
-  private final Address address;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private Address address;
   private final PseUser createdBy;
-  private final Set<Trainer> trainers;
+  private Set<Trainer> trainers;
 
   public Training(Long id, LocalDate startDate, LocalDate endDate, Address address, PseUser createdBy, Set<Trainer> trainers) {
     validate(startDate, endDate, createdBy, trainers);
@@ -54,5 +55,12 @@ public class Training {
   }
   public String getAddressCity() {
     return address.getCity();
+  }
+
+  public void update(UpdateTrainingCommand updateTrainingCommand) {
+    validate(updateTrainingCommand.getStartDate(), updateTrainingCommand.getEndDate(), createdBy, updateTrainingCommand.getTrainers());
+    this.startDate = updateTrainingCommand.getStartDate();
+    this.endDate = updateTrainingCommand.getEndDate();
+    this.trainers = updateTrainingCommand.getTrainers();
   }
 }

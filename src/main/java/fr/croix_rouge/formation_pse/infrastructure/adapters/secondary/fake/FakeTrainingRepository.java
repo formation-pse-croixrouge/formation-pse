@@ -32,8 +32,9 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 
   @Override
-  public void update(UpdateTrainingCommand updateTrainingCommand) {
+  public void update(Training training) {
     throw new RuntimeException("not implemented");
+
   }
 
   @Override
