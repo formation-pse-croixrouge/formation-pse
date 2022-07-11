@@ -1,14 +1,13 @@
 package fr.croix_rouge.formation_pse.usecases.updateTraining;
 
 import fr.croix_rouge.formation_pse.domain.Address;
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Trainer;
-import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -19,15 +18,14 @@ public class UpdateTrainingCommand {
   private final LocalDate startDate;
   private final Address address;
   private final Set<Trainer> trainers;
+  private final Set<Attendee> attendees;
 
-  public UpdateTrainingCommand(Long id, LocalDate endDate, LocalDate startDate, Address address, Set<Trainer> trainers) {
-    if(CollectionUtils.isEmpty(trainers)) {
-      throw new IllegalArgumentException("At least one trainer is needed");
-    }
+  public UpdateTrainingCommand(Long id, LocalDate endDate, LocalDate startDate, Address address, Set<Trainer> trainers, Set<Attendee> attendees) {
     this.id = id;
     this.endDate = endDate;
     this.startDate = startDate;
     this.address = address;
     this.trainers = trainers;
+    this.attendees = attendees;
   }
 }

@@ -1,16 +1,13 @@
 package fr.croix_rouge.formation_pse.usecases.createTraining;
 
 import fr.croix_rouge.formation_pse.domain.Address;
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.Builder;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Builder
@@ -22,8 +19,9 @@ public class CreateTrainingCommand {
   private final Integer addressPostalCode;
   private final String addressCity;
   private final Set<String> trainersNivol;
+  private final Set<Attendee> attendees;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol, Set<Attendee> attendees) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -31,6 +29,7 @@ public class CreateTrainingCommand {
     this.addressPostalCode = addressPostalCode;
     this.addressCity = addressCity;
     this.trainersNivol = trainersNivol == null ? null : Set.copyOf(trainersNivol);
+    this.attendees = attendees == null ? null : Set.copyOf(attendees);
   }
 
   public Training toDomain(Set<Trainer> trainers) {
@@ -45,6 +44,7 @@ public class CreateTrainingCommand {
       )
       .createdBy(user)
       .trainers(trainers)
+      .attendees(attendees)
       .build();
   }
 

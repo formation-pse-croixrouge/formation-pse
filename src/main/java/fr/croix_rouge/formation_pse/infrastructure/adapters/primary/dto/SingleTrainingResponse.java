@@ -1,5 +1,6 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class SingleTrainingResponse {
   private Integer postalCode;
   private String city;
   private Set<TrainerResponse> trainers;
+  private Set<Attendee> attendees;
 
   public static SingleTrainingResponse fromDomain(Training training) {
     SingleTrainingResponse response = new SingleTrainingResponse();
@@ -28,6 +30,7 @@ public class SingleTrainingResponse {
     response.postalCode = training.getAddressPostalCode();
     response.city = training.getAddressCity();
     response.trainers = training.getTrainers().stream().map(TrainerResponse::fromDomain).collect(Collectors.toSet());
+    response.attendees = training.getAttendees();
     return response;
   }
 }
