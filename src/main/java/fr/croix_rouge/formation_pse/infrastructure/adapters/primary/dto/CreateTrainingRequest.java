@@ -1,6 +1,7 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 
@@ -14,6 +15,7 @@ public class CreateTrainingRequest {
   private AddressRequest address;
   @JsonProperty("trainers")
   private List<String> trainersNivol;
+  private Set<Attendee> attendees;
 
   public LocalDate getStartDate() {
     return startDate;
@@ -47,6 +49,14 @@ public class CreateTrainingRequest {
     this.trainersNivol = trainersNivol;
   }
 
+  public Set<Attendee> getAttendees() {
+    return attendees;
+  }
+
+  public void setAttendees(Set<Attendee> attendees) {
+    this.attendees = attendees;
+  }
+
   public CreateTrainingCommand toCommand(PseUser user) {
     return CreateTrainingCommand.builder()
       .user(user)
@@ -56,6 +66,7 @@ public class CreateTrainingRequest {
       .addressPostalCode(address.getPostalCode())
       .addressCity(address.getCity())
       .trainersNivol(Set.copyOf(trainersNivol))
+      .attendees(attendees)
       .build();
   }
 }

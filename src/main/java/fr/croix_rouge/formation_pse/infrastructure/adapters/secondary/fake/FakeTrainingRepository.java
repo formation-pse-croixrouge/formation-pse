@@ -63,5 +63,4 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : Ajouter participants à la création et update de formations.
 // TODO : Faire un endpoint de création de formateurs mais pas de front.
