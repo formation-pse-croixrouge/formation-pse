@@ -2,9 +2,12 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake;
 
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
-import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 public class FakeTrainingRepository implements TrainingRepository {
 
@@ -46,6 +49,7 @@ public class FakeTrainingRepository implements TrainingRepository {
       .address(trainingToSave.getAddress())
       .createdBy(trainingToSave.getCreatedBy())
       .trainers(trainingToSave.getTrainers())
+      .attendees(trainingToSave.getAttendees())
       .build();
     trainings.add(training);
   }

@@ -75,4 +75,8 @@ public class CreateTrainingCommand {
   public Set<String> getTrainersNivol() {
     return trainersNivol;
   }
+
+  public Set<Attendee> getAttendees() {
+    return Set.copyOf(attendees);
+  }
 }

@@ -1,6 +1,7 @@
 package fr.croix_rouge.formation_pse.factories;
 
 import fr.croix_rouge.formation_pse.domain.Address;
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
 
@@ -25,6 +26,10 @@ public class TrainingTestFactory {
           .nivol("A_NIVOL123")
           .firstName("John")
           .lastName("Doe")
+        .build()))
+      .attendees(Set.of(Attendee.builder()
+          .firstName("Victor")
+          .lastName("Rideau")
         .build()))
       .startDate(LocalDate.parse("2021-01-01"))
       .endDate(LocalDate.parse("2021-12-31"));

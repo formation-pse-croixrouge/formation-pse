@@ -1,13 +1,13 @@
 package fr.croix_rouge.formation_pse.unit;
 
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.factories.TrainerTestFactory;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainerRepository;
-import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.factories.PseUserTestFactory;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainerRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainingRepository;
+import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +35,10 @@ class CreateTrainingUseCaseTest {
       .addressPostalCode(69100)
       .addressCity("Villeurbanne")
       .trainersNivol(Set.of(aTrainer.getNivol()))
+      .attendees(Set.of(Attendee.builder()
+        .firstName("John")
+        .lastName("Rambo")
+        .build()))
       .build();
 
     sut.create(trainingToCreateCommand);
@@ -48,6 +52,7 @@ class CreateTrainingUseCaseTest {
     assertThat(savedTraining.getAddress().getCity()).isEqualTo(trainingToCreateCommand.getAddressCity());
     assertThat(savedTraining.getAddress().getPostalCode()).isEqualTo(trainingToCreateCommand.getAddressPostalCode());
     assertThat(savedTraining.getCreatedBy()).isEqualTo(trainingToCreateCommand.getUser());
+    assertThat(savedTraining.getAttendees()).isEqualTo(trainingToCreateCommand.getAttendees());
   }
 
   private Trainer saveTrainer() {

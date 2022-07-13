@@ -44,7 +44,7 @@ class TrainingDbAdapterTest {
   }
 
   private PseUserJpa createUser() {
-    entityManager.createNativeQuery("INSERT INTO USERS(first_name, last_name, nivol) VALUES ('John', 'Doe', 'A_NIVOL')").executeUpdate();
+    entityManager.createNativeQuery("INSERT INTO USERS(id, first_name, last_name, nivol) VALUES (1L, 'John', 'Doe', 'A_NIVOL')").executeUpdate();
     return entityManager.createQuery("Select user from PseUserJpa user", PseUserJpa.class).getSingleResult();
   }
 }
