@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -14,8 +16,11 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 @Setter
 @Getter
-public class AttendeeJpa {
+public class AttendeeJpa extends BaseEntity {
   private String firstName;
   private String lastName;
 
+  @Type(type = "json")
+  @Column(columnDefinition = "jsonb")
+  private TechnicalEvaluationJpa technicalEvaluation;
 }

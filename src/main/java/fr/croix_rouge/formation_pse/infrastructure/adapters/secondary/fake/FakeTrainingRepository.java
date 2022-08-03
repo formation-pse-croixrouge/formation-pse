@@ -67,4 +67,9 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : Faire un endpoint de création de formateurs mais pas de front.
+// TODO : Lors de création de training, sauvegarder structure évaluation des techniques dans le training
+// une rubrique peut être : { id : 3, label : "Une superbe évaluation"}
+// TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis le training et les valeurs depuis la table attendees
+// Les valeurs peuvent être : {id : 3, value : false}
+// TODO : Lors de la sauvegarde, mettre à jour depuis la structure du training
+

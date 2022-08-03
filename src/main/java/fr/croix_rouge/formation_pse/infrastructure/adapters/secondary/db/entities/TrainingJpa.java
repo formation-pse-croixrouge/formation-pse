@@ -85,7 +85,7 @@ public class TrainingJpa {
       )
       .creator(PseUserJpa.fromDomain(training.getCreatedBy()))
       .attendees(training.getAttendees().stream()
-        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName()))
+        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName(), null))
         .collect(Collectors.toSet())
       )
       .build();

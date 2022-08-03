@@ -16,11 +16,9 @@ import java.util.stream.Collectors;
 public class TrainingDbAdapter implements TrainingRepository {
 
   private final TrainingDao dao;
-  private final TrainerRepository trainerRepository;
 
-  public TrainingDbAdapter(TrainingDao dao, TrainerRepository trainerRepository) {
+  public TrainingDbAdapter(TrainingDao dao) {
     this.dao = dao;
-    this.trainerRepository = trainerRepository;
   }
 
   @Override
