@@ -67,9 +67,6 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : Lors de création de training, sauvegarder structure évaluation des techniques dans le training
-// une rubrique peut être : { id : 3, label : "Une superbe évaluation"}
-// TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis le training et les valeurs depuis la table attendees
-// Les valeurs peuvent être : {id : 3, value : false}
-// TODO : Lors de la sauvegarde, mettre à jour depuis la structure du training
+// TODO : Lors de création de training, sauvegarder évaluation des techniques pour chacun des participants avec false partout
+// une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}}
 
