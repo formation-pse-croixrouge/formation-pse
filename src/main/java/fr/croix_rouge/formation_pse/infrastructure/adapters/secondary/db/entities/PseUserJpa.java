@@ -4,6 +4,7 @@ import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class PseUserJpa {
 
   @Id

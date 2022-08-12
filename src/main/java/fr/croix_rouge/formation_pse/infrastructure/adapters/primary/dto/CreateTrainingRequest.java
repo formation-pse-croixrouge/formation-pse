@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+@Data
 public class CreateTrainingRequest {
   private LocalDate startDate;
   private LocalDate endDate;
@@ -16,46 +18,7 @@ public class CreateTrainingRequest {
   @JsonProperty("trainers")
   private List<String> trainersNivol;
   private Set<Attendee> attendees;
-
-  public LocalDate getStartDate() {
-    return startDate;
-  }
-
-  public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
-  }
-
-  public LocalDate getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(LocalDate endDate) {
-    this.endDate = endDate;
-  }
-
-  public AddressRequest getAddress() {
-    return address;
-  }
-
-  public void setAddress(AddressRequest address) {
-    this.address = address;
-  }
-
-  public List<String> getTrainersNivol() {
-    return trainersNivol;
-  }
-
-  public void setTrainersNivol(List<String> trainersNivol) {
-    this.trainersNivol = trainersNivol;
-  }
-
-  public Set<Attendee> getAttendees() {
-    return attendees;
-  }
-
-  public void setAttendees(Set<Attendee> attendees) {
-    this.attendees = attendees;
-  }
+  private Set<TechnicalAssessmentModule> technicalAssessmentModules;
 
   public CreateTrainingCommand toCommand(PseUser user) {
     return CreateTrainingCommand.builder()
@@ -67,6 +30,7 @@ public class CreateTrainingRequest {
       .addressCity(address.getCity())
       .trainersNivol(Set.copyOf(trainersNivol))
       .attendees(attendees)
+      .technicalAssessmentModules(technicalAssessmentModules)
       .build();
   }
 }

@@ -5,12 +5,17 @@ import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,6 +35,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Setter
 public class TrainingJpa {
 
@@ -43,14 +49,11 @@ public class TrainingJpa {
   @Column(name = "END_DATE")
   private LocalDate endDate;
 
-  @Column(name = "ADDRESS_LABEL")
-  private String addressLabel;
-
-  @Column(name = "ADDRESS_POSTAL_CODE")
-  private Integer addressPostalCode;
-
-  @Column(name = "ADDRESS_CITY")
-  private String addressCity;
+  @Embedded
+  @AttributeOverride( name = "label", column = @Column(name = "ADDRESS_LABEL"))
+  @AttributeOverride( name = "city", column = @Column(name = "ADDRESS_CITY"))
+  @AttributeOverride( name = "postalCode", column = @Column(name = "ADDRESS_POSTAL_CODE"))
+  private AddressJpa address;
 
   @ManyToOne
   @JoinColumn(name = "creator_id", nullable = false)
@@ -65,29 +68,34 @@ public class TrainingJpa {
   private Set<PseUserJpa> trainers;
 
   @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name="TRAININGS_ATTENDEES")
   private Set<AttendeeJpa> attendees;
 
-  public Long getId() {
-    return id;
-  }
+  @Type(type = "json")
+  @Column(columnDefinition = "json", updatable = false)
+  private TechnicalAssessmentStructureJpa technicalAssessmentStructure;
 
   public static TrainingJpa fromDomain(Training training) {
     return TrainingJpa.builder()
       .id(training.getId())
       .startDate(training.getStartDate())
       .endDate(training.getEndDate())
-      .addressCity(training.getAddressCity())
-      .addressLabel(training.getAddressLabel())
-      .addressPostalCode(training.getAddressPostalCode())
+      .address(AddressJpa.builder()
+        .city(training.getAddressCity())
+        .label(training.getAddressLabel())
+        .postalCode(training.getAddressPostalCode())
+        .build()
+      )
       .trainers(training.getTrainers().stream()
         .map(PseUserJpa::fromTrainer)
         .collect(Collectors.toSet())
       )
       .creator(PseUserJpa.fromDomain(training.getCreatedBy()))
       .attendees(training.getAttendees().stream()
-        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName(), null))
+        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName()))
         .collect(Collectors.toSet())
       )
+      .technicalAssessmentStructure(TechnicalAssessmentStructureJpa.fromDomain(training.getTechnicalAssessmentStructure()))
       .build();
   }
 
@@ -97,9 +105,9 @@ public class TrainingJpa {
       .startDate(startDate)
       .endDate(endDate)
       .address(Address.builder()
-        .label(addressLabel)
-        .city(addressCity)
-        .postalCode(addressPostalCode)
+        .label(address.getLabel())
+        .city(address.getCity())
+        .postalCode(address.getPostalCode())
         .build())
       .trainers(trainers.stream().map(PseUserJpa::toTrainer).collect(Collectors.toSet()))
       .createdBy(creator.toDomain())
@@ -107,6 +115,7 @@ public class TrainingJpa {
         .map(attendeeJpa -> new Attendee(attendeeJpa.getFirstName(), attendeeJpa.getLastName()))
         .collect(Collectors.toSet())
       )
+      .technicalAssessmentStructure(technicalAssessmentStructure.toDomain())
       .build();
   }
 }

@@ -2,9 +2,11 @@ package fr.croix_rouge.formation_pse.unit;
 
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.factories.PseUserTestFactory;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainerRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainingRepository;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
@@ -39,6 +41,10 @@ class CreateTrainingUseCaseTest {
         .firstName("John")
         .lastName("Rambo")
         .build()))
+      .technicalAssessmentModules(Set.of(TechnicalAssessmentModule.builder()
+        .title("Module 1 : Organisation des secours")
+        .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+        .build()))
       .build();
 
     sut.create(trainingToCreateCommand);
@@ -53,6 +59,9 @@ class CreateTrainingUseCaseTest {
     assertThat(savedTraining.getAddress().getPostalCode()).isEqualTo(trainingToCreateCommand.getAddressPostalCode());
     assertThat(savedTraining.getCreatedBy()).isEqualTo(trainingToCreateCommand.getUser());
     assertThat(savedTraining.getAttendees()).isEqualTo(trainingToCreateCommand.getAttendees());
+    assertThat(savedTraining.getTechnicalAssessmentStructure()).isEqualTo(
+      new TechnicalAssessmentStructure(trainingToCreateCommand.getTechnicalAssessmentModules())
+    );
   }
 
   private Trainer saveTrainer() {

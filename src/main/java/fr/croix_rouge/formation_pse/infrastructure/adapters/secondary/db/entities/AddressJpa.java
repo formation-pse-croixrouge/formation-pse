@@ -4,17 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-public class AttendeeJpa extends BaseEntity {
-  private String firstName;
-  private String lastName;
+public class AddressJpa {
+  @Column(name = "ADDRESS_LABEL")
+  private String label;
+
+  @Column(name = "ADDRESS_POSTAL_CODE")
+  private Integer postalCode;
+
+  @Column(name = "ADDRESS_CITY")
+  private String city;
 }

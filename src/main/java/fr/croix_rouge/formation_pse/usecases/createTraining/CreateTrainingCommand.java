@@ -3,8 +3,10 @@ package fr.croix_rouge.formation_pse.usecases.createTraining;
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -20,8 +22,9 @@ public class CreateTrainingCommand {
   private final String addressCity;
   private final Set<String> trainersNivol;
   private final Set<Attendee> attendees;
+  private final Set<TechnicalAssessmentModule> technicalAssessmentModules;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol, Set<Attendee> attendees) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol, Set<Attendee> attendees, Set<TechnicalAssessmentModule> technicalAssessmentModules) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -30,6 +33,7 @@ public class CreateTrainingCommand {
     this.addressCity = addressCity;
     this.trainersNivol = trainersNivol == null ? null : Set.copyOf(trainersNivol);
     this.attendees = attendees == null ? null : Set.copyOf(attendees);
+    this.technicalAssessmentModules = technicalAssessmentModules == null ? null : Set.copyOf(technicalAssessmentModules);
   }
 
   public Training toDomain(Set<Trainer> trainers) {
@@ -45,6 +49,7 @@ public class CreateTrainingCommand {
       .createdBy(user)
       .trainers(trainers)
       .attendees(attendees)
+      .technicalAssessmentStructure(new TechnicalAssessmentStructure(technicalAssessmentModules))
       .build();
   }
 
@@ -78,5 +83,9 @@ public class CreateTrainingCommand {
 
   public Set<Attendee> getAttendees() {
     return Set.copyOf(attendees);
+  }
+
+  public Set<TechnicalAssessmentModule> getTechnicalAssessmentModules() {
+    return technicalAssessmentModules;
   }
 }

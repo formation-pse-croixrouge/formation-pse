@@ -2,8 +2,10 @@ package fr.croix_rouge.formation_pse.factories;
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -32,6 +34,10 @@ public class TrainingTestFactory {
           .lastName("Rideau")
         .build()))
       .startDate(LocalDate.parse("2021-01-01"))
+      .technicalAssessmentStructure(new TechnicalAssessmentStructure(Set.of(TechnicalAssessmentModule.builder()
+        .title("Module 1 : Organisation des secours")
+        .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+        .build())))
       .endDate(LocalDate.parse("2021-12-31"));
   }
 }

@@ -1,5 +1,6 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake;
 
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 
@@ -50,6 +51,7 @@ public class FakeTrainingRepository implements TrainingRepository {
       .createdBy(trainingToSave.getCreatedBy())
       .trainers(trainingToSave.getTrainers())
       .attendees(trainingToSave.getAttendees())
+      .technicalAssessmentStructure(trainingToSave.getTechnicalAssessmentStructure())
       .build();
     trainings.add(training);
   }
@@ -67,6 +69,12 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : Lors de création de training, sauvegarder évaluation des techniques pour chacun des participants avec false partout
-// une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}}
+// TODO : On a besoin de sauvegarder la structure du training car on doit être capable d'ajouter des attendees
+// mais la structure ne change pas
+// TODO : Lors de création de training, sauvegarder structure évaluation des techniques dans le training + sauvegarde dans les nouveaux attendees ajoutés uniquement
+// TODO : Garder ordre de l'utilisateur
+// une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}]}
+// TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis attendee
+// TODO : Lors de la sauvegarde, mettre à jour depuis attendee
 
+// TODO : FRONT Enlever mock technicalAssessment
