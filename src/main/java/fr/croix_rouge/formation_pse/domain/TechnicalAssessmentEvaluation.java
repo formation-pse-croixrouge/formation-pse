@@ -34,11 +34,11 @@ public class TechnicalAssessmentEvaluation {
         .title(module.getTitle())
         .skills(module.getGrades().stream()
           .map(Grade::getSkill)
-          .collect(Collectors.toSet())
+          .collect(Collectors.toList())
         )
         .build()
       )
-      .collect(Collectors.toSet()));
+      .collect(Collectors.toList()));
   }
 
   @Getter
@@ -55,7 +55,7 @@ public class TechnicalAssessmentEvaluation {
       this.skill = skill;
     }
 
-    public static List<Grade> fromSkills(Set<String> skills) {
+    public static List<Grade> fromSkills(List<String> skills) {
       List<Grade> grades = new ArrayList<>();
       for (String s : skills) {
         grades.add(new Grade(s));

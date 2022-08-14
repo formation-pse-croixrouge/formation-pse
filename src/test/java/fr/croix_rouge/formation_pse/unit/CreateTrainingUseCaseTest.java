@@ -15,6 +15,7 @@ import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCas
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static fr.croix_rouge.formation_pse.factories.TrainerTestFactory.aTrainer;
@@ -30,9 +31,9 @@ class CreateTrainingUseCaseTest {
   void shouldCreateATraining() {
     PseUser user = PseUserTestFactory.organizer();
     Trainer aTrainer = saveTrainer();
-    Set<TechnicalAssessmentModule> modules = Set.of(TechnicalAssessmentModule.builder()
+    List<TechnicalAssessmentModule> modules = List.of(TechnicalAssessmentModule.builder()
       .title("Module 1 : Organisation des secours")
-      .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+      .skills(List.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
       .build());
     TechnicalAssessmentStructure structure = new TechnicalAssessmentStructure(modules);
     CreateTrainingCommand trainingToCreateCommand = CreateTrainingCommand.builder()

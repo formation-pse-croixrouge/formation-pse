@@ -98,15 +98,15 @@ class TrainingDbAdapterTest {
     assertThat(savedTraining.getCreator().getId()).isEqualTo(trainingToSave.getCreatedBy().getId());
     TechnicalAssessmentModule moduleToSave = trainingToSave.getTechnicalAssessmentStructure().getModules().iterator().next();
     String savedModuleTitle = savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getTitle();
-    Set<String> savedModuleSkills = getTechnicalAssessmentSkills(savedTraining);
+    List<String> savedModuleSkills = getTechnicalAssessmentSkills(savedTraining);
     assertThat(savedModuleSkills).isEqualTo(moduleToSave.getSkills());
     assertThat(savedModuleTitle).isEqualTo(moduleToSave.getTitle());
   }
 
-  private Set<String> getTechnicalAssessmentSkills(TrainingJpa savedTraining) {
+  private List<String> getTechnicalAssessmentSkills(TrainingJpa savedTraining) {
     return savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getGrades().stream()
         .map(GradeJpa::getSkill)
-          .collect(Collectors.toSet());
+          .collect(Collectors.toList());
   }
 
   @Test

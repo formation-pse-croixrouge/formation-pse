@@ -9,6 +9,7 @@ import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.Technica
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -21,9 +22,9 @@ public class CreateTrainingCommand {
   private final String addressCity;
   private final Set<String> trainersNivol;
   private final Set<Attendee> attendees;
-  private final Set<TechnicalAssessmentModule> technicalAssessmentModules;
+  private final List<TechnicalAssessmentModule> technicalAssessmentModules;
 
-  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol, Set<Attendee> attendees, Set<TechnicalAssessmentModule> technicalAssessmentModules) {
+  public CreateTrainingCommand(PseUser user, LocalDate startDate, LocalDate endDate, String addressLabel, Integer addressPostalCode, String addressCity, Set<String> trainersNivol, Set<Attendee> attendees, List<TechnicalAssessmentModule> technicalAssessmentModules) {
     this.user = user;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -32,7 +33,7 @@ public class CreateTrainingCommand {
     this.addressCity = addressCity;
     this.trainersNivol = trainersNivol == null ? null : Set.copyOf(trainersNivol);
     this.attendees = attendees == null ? null : Set.copyOf(attendees);
-    this.technicalAssessmentModules = technicalAssessmentModules == null ? null : Set.copyOf(technicalAssessmentModules);
+    this.technicalAssessmentModules = technicalAssessmentModules == null ? null : List.copyOf(technicalAssessmentModules);
   }
 
   public Training toDomain(Set<Trainer> trainers) {
@@ -83,7 +84,7 @@ public class CreateTrainingCommand {
     return Set.copyOf(attendees);
   }
 
-  public Set<TechnicalAssessmentModule> getTechnicalAssessmentModules() {
+  public List<TechnicalAssessmentModule> getTechnicalAssessmentModules() {
     return technicalAssessmentModules;
   }
 }

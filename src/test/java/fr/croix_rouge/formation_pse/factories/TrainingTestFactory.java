@@ -9,6 +9,7 @@ import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static fr.croix_rouge.formation_pse.factories.PseUserTestFactory.organizer;
@@ -16,9 +17,9 @@ import static fr.croix_rouge.formation_pse.factories.PseUserTestFactory.organize
 public class TrainingTestFactory {
 
   public static Training.TrainingBuilder aTraining() {
-    Set<TechnicalAssessmentModule> someModules = Set.of(TechnicalAssessmentModule.builder()
+    List<TechnicalAssessmentModule> someModules = List.of(TechnicalAssessmentModule.builder()
       .title("Module 1 : Organisation des secours")
-      .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+      .skills(List.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
       .build());
     TechnicalAssessmentStructure aStructure = new TechnicalAssessmentStructure(someModules);
     TechnicalAssessmentEvaluation anEmptyEvaluation = TechnicalAssessmentEvaluation.generateIncomplete(aStructure);
@@ -42,7 +43,6 @@ public class TrainingTestFactory {
           .technicalAssessmentEvaluation(anEmptyEvaluation)
         .build()))
       .startDate(LocalDate.parse("2021-01-01"))
-      .technicalAssessmentStructure(aStructure)
       .endDate(LocalDate.parse("2021-12-31"));
   }
 }

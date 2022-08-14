@@ -21,7 +21,7 @@ public class CreateTrainingRequest {
   @JsonProperty("trainers")
   private List<String> trainersNivol;
   private Set<AttendeeRequest> attendees;
-  private Set<TechnicalAssessmentModule> technicalAssessmentModules;
+  private List<TechnicalAssessmentModule> technicalAssessmentModules;
 
   public CreateTrainingCommand toCommand(PseUser user) {
     return CreateTrainingCommand.builder()

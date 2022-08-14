@@ -115,7 +115,6 @@ public class TrainingJpa {
       .createdBy(creator.toDomain())
       .attendees(attendees
       )
-      .technicalAssessmentStructure(attendees.iterator().next().getTechnicalAssessmentStructure())
       .build();
   }
 }

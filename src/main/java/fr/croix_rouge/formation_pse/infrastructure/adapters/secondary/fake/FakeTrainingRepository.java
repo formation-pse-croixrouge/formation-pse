@@ -67,11 +67,7 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// DONE TODO : On a besoin de sauvegarder la structure du training car on doit être capable d'ajouter des attendees
-// DONE mais la structure ne change pas
-// DONE TODO : Lors de création de training, sauvegarder structure évaluation des techniques dans le training
 // TODO : Garder ordre de l'utilisateur
-// TODO : Sauvegarder dans tous les attendees lors de la création
 // TODO : sauvegarde dans les nouveaux attendees lors de l'update
 // une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}]}
 // TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis attendee
