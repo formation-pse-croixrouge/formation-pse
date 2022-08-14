@@ -67,10 +67,8 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : Garder ordre de l'utilisateur
 // TODO : sauvegarde dans les nouveaux attendees lors de l'update
 // une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}]}
 // TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis attendee
 // TODO : Lors de la sauvegarde, mettre à jour depuis attendee
 
-// TODO : FRONT Enlever mock technicalAssessment

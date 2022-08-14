@@ -1,6 +1,9 @@
 package fr.croix_rouge.formation_pse.integration;
 
+import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDao;
@@ -79,6 +82,41 @@ class TrainingDbAdapterTest {
   }
 
   @Test
+  void shouldSaveTechnicalAssessmentStructureAndKeepOrder() {
+    // GIVEN
+    PseUserJpa aUser = createUser();
+    Training trainingToSave = aTraining()
+      .createdBy(new PseUser(aUser.getId(), null, null, null, null))
+      .attendees(Set.of(
+        Attendee.builder()
+          .firstName("Joe")
+          .lastName("Dalton")
+          .technicalAssessmentEvaluation(TechnicalAssessmentEvaluation.generateIncomplete(new TechnicalAssessmentStructure(List.of(
+            TechnicalAssessmentModule.builder()
+              .title("Second module")
+              .skills(List.of("Third skill", "gogo"))
+              .build(),
+            TechnicalAssessmentModule.builder()
+              .title("First module but put second for w/e reason")
+              .skills(List.of("ZZZ", "What"))
+              .build()
+          ))))
+          .build()
+      ))
+      .build();
+
+    // WHEN
+    sut.save(trainingToSave);
+
+    TrainingJpa savedTraining = dao.findAll().get(0);
+    AttendeeJpa anAttendee = savedTraining.getAttendees().iterator().next();
+    TechnicalAssessmentEvaluationModuleJpa firstModule = anAttendee.getTechnicalAssessmentEvaluation().getModules().get(0);
+    assertThat(firstModule.getTitle()).isEqualTo("Second module");
+    assertThat(firstModule.getGrades().stream().map(GradeJpa::getSkill).collect(Collectors.toList()))
+      .isEqualTo(List.of("Third skill", "gogo"));
+  }
+
+  @Test
   void shouldSave() {
     // GIVEN
     PseUserJpa aUser = createUser();
@@ -97,14 +135,18 @@ class TrainingDbAdapterTest {
     assertThat(savedTraining.getAddress().getLabel()).isEqualTo(trainingToSave.getAddress().getLabel());
     assertThat(savedTraining.getCreator().getId()).isEqualTo(trainingToSave.getCreatedBy().getId());
     TechnicalAssessmentModule moduleToSave = trainingToSave.getTechnicalAssessmentStructure().getModules().iterator().next();
-    String savedModuleTitle = savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getTitle();
+    String savedModuleTitle = getTitleOfFirstTechnicalAssessmentModule(savedTraining);
     List<String> savedModuleSkills = getTechnicalAssessmentSkills(savedTraining);
     assertThat(savedModuleSkills).isEqualTo(moduleToSave.getSkills());
     assertThat(savedModuleTitle).isEqualTo(moduleToSave.getTitle());
   }
 
+  private String getTitleOfFirstTechnicalAssessmentModule(TrainingJpa savedTraining) {
+    return savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().get(0).getTitle();
+  }
+
   private List<String> getTechnicalAssessmentSkills(TrainingJpa savedTraining) {
-    return savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getGrades().stream()
+    return savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().get(0).getGrades().stream()
         .map(GradeJpa::getSkill)
           .collect(Collectors.toList());
   }
@@ -119,11 +161,11 @@ class TrainingDbAdapterTest {
     Set<Training> all = sut.all();
 
     assertThat(all).hasSize(1);
-    Training retrivedTrainingJpa = all.iterator().next();
-    assertThat(retrivedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getSkills())
+    Training retrievedTrainingJpa = all.iterator().next();
+    assertThat(retrievedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getSkills())
       .isEqualTo(getTechnicalAssessmentSkills(savedTrainingJpa));
 
-    assertThat(retrivedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getTitle())
-      .isEqualTo(savedTrainingJpa.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getTitle());
+    assertThat(retrievedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getTitle())
+      .isEqualTo(getTitleOfFirstTechnicalAssessmentModule(savedTrainingJpa));
   }
 }
