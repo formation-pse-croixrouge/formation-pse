@@ -4,7 +4,6 @@ import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 

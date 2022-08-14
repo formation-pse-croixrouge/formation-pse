@@ -2,13 +2,13 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entiti
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
 import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -71,10 +71,6 @@ public class TrainingJpa {
   @CollectionTable(name="TRAININGS_ATTENDEES")
   private Set<AttendeeJpa> attendees;
 
-  @Type(type = "json")
-  @Column(columnDefinition = "json", updatable = false)
-  private TechnicalAssessmentStructureJpa technicalAssessmentStructure;
-
   public static TrainingJpa fromDomain(Training training) {
     return TrainingJpa.builder()
       .id(training.getId())
@@ -92,14 +88,20 @@ public class TrainingJpa {
       )
       .creator(PseUserJpa.fromDomain(training.getCreatedBy()))
       .attendees(training.getAttendees().stream()
-        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName()))
+        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName(), TechnicalAssessmentEvaluationJpa.fromDomain(attendee.getTechnicalAssessmentEvaluation())))
         .collect(Collectors.toSet())
       )
-      .technicalAssessmentStructure(TechnicalAssessmentStructureJpa.fromDomain(training.getTechnicalAssessmentStructure()))
       .build();
   }
 
   public Training toDomain() {
+    Set<Attendee> attendees = this.attendees.stream()
+      .map(attendeeJpa -> {
+        TechnicalAssessmentEvaluationJpa evaluationJpa = attendeeJpa.getTechnicalAssessmentEvaluation();
+        TechnicalAssessmentEvaluation evaluation = evaluationJpa.toDomain();
+        return new Attendee(attendeeJpa.getFirstName(), attendeeJpa.getLastName(), evaluation);
+      })
+      .collect(Collectors.toSet());
     return Training.builder()
       .id(id)
       .startDate(startDate)
@@ -111,11 +113,9 @@ public class TrainingJpa {
         .build())
       .trainers(trainers.stream().map(PseUserJpa::toTrainer).collect(Collectors.toSet()))
       .createdBy(creator.toDomain())
-      .attendees(attendees.stream()
-        .map(attendeeJpa -> new Attendee(attendeeJpa.getFirstName(), attendeeJpa.getLastName()))
-        .collect(Collectors.toSet())
+      .attendees(attendees
       )
-      .technicalAssessmentStructure(technicalAssessmentStructure.toDomain())
+      .technicalAssessmentStructure(attendees.iterator().next().getTechnicalAssessmentStructure())
       .build();
   }
 }

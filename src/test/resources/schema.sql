@@ -18,7 +18,6 @@ create table trainings
     address_postal_code            int4,
     end_date                       date,
     start_date                     date,
-    technical_assessment_structure json not null,
     creator_id                     int8 not null references users,
     primary key (id)
 );
@@ -27,7 +26,8 @@ create table trainings_attendees
 (
     training_jpa_id      int8 not null references trainings,
     first_name           varchar(255),
-    last_name            varchar(255)
+    last_name            varchar(255),
+    technical_assessment_evaluation json
 );
 
 create table trainings_users

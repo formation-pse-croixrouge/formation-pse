@@ -1,11 +1,8 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db;
 
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.domain.exceptions.TrainingNotFoundException;
-import fr.croix_rouge.formation_pse.domain.ports.TrainerRepository;
 import fr.croix_rouge.formation_pse.domain.ports.TrainingRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TrainingJpa;
-import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

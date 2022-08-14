@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainersResponse.*;
+import static fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainersResponse.TrainerResponse;
 
 @Data
 public class SingleTrainingResponse {

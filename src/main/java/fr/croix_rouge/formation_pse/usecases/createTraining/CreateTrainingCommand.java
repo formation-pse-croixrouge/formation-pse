@@ -3,7 +3,6 @@ package fr.croix_rouge.formation_pse.usecases.createTraining;
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
-import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
@@ -49,7 +48,6 @@ public class CreateTrainingCommand {
       .createdBy(user)
       .trainers(trainers)
       .attendees(attendees)
-      .technicalAssessmentStructure(new TechnicalAssessmentStructure(technicalAssessmentModules))
       .build();
   }
 

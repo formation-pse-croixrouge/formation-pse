@@ -1,7 +1,6 @@
 package fr.croix_rouge.formation_pse.integration;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
-import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDao;
@@ -9,8 +8,9 @@ import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.Trainin
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.AddressJpa;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.AttendeeJpa;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.PseUserJpa;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TechnicalAssessmentModuleJpa;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TechnicalAssessmentStructureJpa;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TechnicalAssessmentEvaluationJpa;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TechnicalAssessmentEvaluationJpa.TechnicalAssessmentEvaluationModuleJpa;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TechnicalAssessmentEvaluationJpa.TechnicalAssessmentEvaluationModuleJpa.GradeJpa;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.TrainingJpa;
 import fr.croix_rouge.formation_pse.utils.DbIntegrationTest;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static fr.croix_rouge.formation_pse.factories.TrainingTestFactory.aTraining;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,13 +53,11 @@ class TrainingDbAdapterTest {
 
   private TrainingJpa aTrainingJpa() {
     PseUserJpa aUser = createUser();
+    List<TechnicalAssessmentEvaluationModuleJpa> evaluationModuleJpas = List.of(
+      new TechnicalAssessmentEvaluationModuleJpa("a title", List.of(new GradeJpa("do stuff", true))));
     return TrainingJpa.builder()
       .startDate(LocalDate.parse("2021-01-01"))
       .endDate(LocalDate.parse("2021-12-31"))
-      .technicalAssessmentStructure(new TechnicalAssessmentStructureJpa(Set.of(TechnicalAssessmentModuleJpa.builder()
-        .title("a title")
-        .skills(Set.of("do stuff", "do nothing"))
-        .build())))
       .creator(aUser)
       .address(AddressJpa.builder()
         .postalCode(2222)
@@ -66,7 +65,11 @@ class TrainingDbAdapterTest {
         .city("Paris")
         .build())
       .trainers(Set.of(aUser))
-      .attendees(Set.of(AttendeeJpa.builder().firstName("Victor").lastName("Lodes").build()))
+      .attendees(Set.of(AttendeeJpa.builder()
+        .firstName("Victor")
+        .lastName("Lodes")
+        .technicalAssessmentEvaluation(new TechnicalAssessmentEvaluationJpa(evaluationModuleJpas))
+        .build()))
       .endDate(LocalDate.now()).build();
   }
 
@@ -93,27 +96,34 @@ class TrainingDbAdapterTest {
     assertThat(savedTraining.getAddress().getPostalCode()).isEqualTo(trainingToSave.getAddress().getPostalCode());
     assertThat(savedTraining.getAddress().getLabel()).isEqualTo(trainingToSave.getAddress().getLabel());
     assertThat(savedTraining.getCreator().getId()).isEqualTo(trainingToSave.getCreatedBy().getId());
-    TechnicalAssessmentModuleJpa module = savedTraining.getTechnicalAssessmentStructure().getModules().iterator().next();
     TechnicalAssessmentModule moduleToSave = trainingToSave.getTechnicalAssessmentStructure().getModules().iterator().next();
-    assertThat(module.getSkills()).isEqualTo(moduleToSave.getSkills());
-    assertThat(module.getTitle()).isEqualTo(moduleToSave.getTitle());
+    String savedModuleTitle = savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getTitle();
+    Set<String> savedModuleSkills = getTechnicalAssessmentSkills(savedTraining);
+    assertThat(savedModuleSkills).isEqualTo(moduleToSave.getSkills());
+    assertThat(savedModuleTitle).isEqualTo(moduleToSave.getTitle());
+  }
+
+  private Set<String> getTechnicalAssessmentSkills(TrainingJpa savedTraining) {
+    return savedTraining.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getGrades().stream()
+        .map(GradeJpa::getSkill)
+          .collect(Collectors.toSet());
   }
 
   @Test
   void shouldFindAll() {
     // GIVEN
-    TrainingJpa trainingJpa = aTrainingJpa();
-    dao.save(trainingJpa);
+    TrainingJpa savedTrainingJpa = aTrainingJpa();
+    dao.save(savedTrainingJpa);
 
     // WHEN
     Set<Training> all = sut.all();
 
     assertThat(all).hasSize(1);
-    Training savedTraining = all.iterator().next();
-    assertThat(savedTraining.getTechnicalAssessmentStructure().getModules().iterator().next().getSkills())
-      .isEqualTo(trainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getSkills());
+    Training retrivedTrainingJpa = all.iterator().next();
+    assertThat(retrivedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getSkills())
+      .isEqualTo(getTechnicalAssessmentSkills(savedTrainingJpa));
 
-    assertThat(savedTraining.getTechnicalAssessmentStructure().getModules().iterator().next().getTitle())
-      .isEqualTo(trainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getTitle());
+    assertThat(retrivedTrainingJpa.getTechnicalAssessmentStructure().getModules().iterator().next().getTitle())
+      .isEqualTo(savedTrainingJpa.getAttendees().iterator().next().getTechnicalAssessmentEvaluation().getModules().iterator().next().getTitle());
   }
 }

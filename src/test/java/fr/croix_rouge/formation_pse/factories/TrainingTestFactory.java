@@ -2,6 +2,7 @@ package fr.croix_rouge.formation_pse.factories;
 
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
@@ -15,6 +16,12 @@ import static fr.croix_rouge.formation_pse.factories.PseUserTestFactory.organize
 public class TrainingTestFactory {
 
   public static Training.TrainingBuilder aTraining() {
+    Set<TechnicalAssessmentModule> someModules = Set.of(TechnicalAssessmentModule.builder()
+      .title("Module 1 : Organisation des secours")
+      .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+      .build());
+    TechnicalAssessmentStructure aStructure = new TechnicalAssessmentStructure(someModules);
+    TechnicalAssessmentEvaluation anEmptyEvaluation = TechnicalAssessmentEvaluation.generateIncomplete(aStructure);
     return Training.builder()
       .id(8888L)
       .createdBy(organizer())
@@ -32,12 +39,10 @@ public class TrainingTestFactory {
       .attendees(Set.of(Attendee.builder()
           .firstName("Victor")
           .lastName("Rideau")
+          .technicalAssessmentEvaluation(anEmptyEvaluation)
         .build()))
       .startDate(LocalDate.parse("2021-01-01"))
-      .technicalAssessmentStructure(new TechnicalAssessmentStructure(Set.of(TechnicalAssessmentModule.builder()
-        .title("Module 1 : Organisation des secours")
-        .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
-        .build())))
+      .technicalAssessmentStructure(aStructure)
       .endDate(LocalDate.parse("2021-12-31"));
   }
 }

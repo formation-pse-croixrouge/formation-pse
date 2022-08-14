@@ -1,23 +1,30 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary;
 
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
 import fr.croix_rouge.formation_pse.domain.ports.TrainerRepository;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTrainingRequest;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.GetAllTrainingResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.SingleTrainingResponse;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.UpdateTrainingRequest;
-import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
-import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingUseCase;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
-import fr.croix_rouge.formation_pse.domain.ports.PseUserRepository;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.CreateTrainingRequest;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingUseCase;
 import fr.croix_rouge.formation_pse.usecases.deleteTraining.DeleteTrainingUseCase;
 import fr.croix_rouge.formation_pse.usecases.getAllTrainings.GetAllTrainingsUseCase;
 import fr.croix_rouge.formation_pse.usecases.getSingleTraining.GetSingleTrainingUseCase;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingCommand;
+import fr.croix_rouge.formation_pse.usecases.updateTraining.UpdateTrainingUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/trainings")

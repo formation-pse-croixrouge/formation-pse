@@ -2,6 +2,7 @@ package fr.croix_rouge.formation_pse.unit;
 
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
@@ -29,6 +30,11 @@ class CreateTrainingUseCaseTest {
   void shouldCreateATraining() {
     PseUser user = PseUserTestFactory.organizer();
     Trainer aTrainer = saveTrainer();
+    Set<TechnicalAssessmentModule> modules = Set.of(TechnicalAssessmentModule.builder()
+      .title("Module 1 : Organisation des secours")
+      .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
+      .build());
+    TechnicalAssessmentStructure structure = new TechnicalAssessmentStructure(modules);
     CreateTrainingCommand trainingToCreateCommand = CreateTrainingCommand.builder()
       .user(user)
       .startDate(LocalDate.now())
@@ -40,11 +46,9 @@ class CreateTrainingUseCaseTest {
       .attendees(Set.of(Attendee.builder()
         .firstName("John")
         .lastName("Rambo")
+        .technicalAssessmentEvaluation(TechnicalAssessmentEvaluation.generateIncomplete(structure))
         .build()))
-      .technicalAssessmentModules(Set.of(TechnicalAssessmentModule.builder()
-        .title("Module 1 : Organisation des secours")
-        .skills(Set.of("Réaliser l'inventaire des sacs de PS", "Réaliser l’inventaire du matériel (lot A et VPSP)"))
-        .build()))
+      .technicalAssessmentModules(modules)
       .build();
 
     sut.create(trainingToCreateCommand);
@@ -58,10 +62,18 @@ class CreateTrainingUseCaseTest {
     assertThat(savedTraining.getAddress().getCity()).isEqualTo(trainingToCreateCommand.getAddressCity());
     assertThat(savedTraining.getAddress().getPostalCode()).isEqualTo(trainingToCreateCommand.getAddressPostalCode());
     assertThat(savedTraining.getCreatedBy()).isEqualTo(trainingToCreateCommand.getUser());
-    assertThat(savedTraining.getAttendees()).isEqualTo(trainingToCreateCommand.getAttendees());
-    assertThat(savedTraining.getTechnicalAssessmentStructure()).isEqualTo(
-      new TechnicalAssessmentStructure(trainingToCreateCommand.getTechnicalAssessmentModules())
-    );
+
+    TechnicalAssessmentStructure expectedTechnicalAssessmentStructure = new TechnicalAssessmentStructure(trainingToCreateCommand.getTechnicalAssessmentModules());
+    assertThat(savedTraining.getTechnicalAssessmentStructure()).isEqualTo(expectedTechnicalAssessmentStructure);
+    Set<Attendee> savedAttendees = savedTraining.getAttendees();
+    assertThat(savedAttendees).isEqualTo(trainingToCreateCommand.getAttendees());
+    savedAttendees.forEach(attendee -> {
+      assertThat(trainingToCreateCommand.getAttendees().stream()
+        .anyMatch(att -> attendee.getFirstName().equals(att.getFirstName()) && attendee.getLastName().equals(att.getLastName()))).isTrue();
+      assertThat(attendee.getTechnicalAssessmentStructure()).isEqualTo(expectedTechnicalAssessmentStructure);
+      TechnicalAssessmentEvaluation technicalAssessmentEvaluation = attendee.getTechnicalAssessmentEvaluation();
+      technicalAssessmentEvaluation.getGrades().forEach(grade -> assertThat(grade.isIncomplete()).isTrue());
+    });
   }
 
   private Trainer saveTrainer() {

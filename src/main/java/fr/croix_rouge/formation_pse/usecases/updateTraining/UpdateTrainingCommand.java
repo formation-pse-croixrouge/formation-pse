@@ -5,7 +5,6 @@ import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.Set;
