@@ -1,4 +1,4 @@
-package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
+package fr.croix_rouge.formation_pse.domain;
 
 import lombok.Builder;
 import lombok.Data;

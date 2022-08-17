@@ -1,6 +1,6 @@
 package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 
-import fr.croix_rouge.formation_pse.domain.Attendee;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.domain.Training;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class SingleTrainingResponse {
   private Integer postalCode;
   private String city;
   private Set<TrainerResponse> trainers;
-  private Set<Attendee> attendees;
+  private Set<AttendeeDto> attendees;
   private List<TechnicalAssessmentModuleResponse> technicalAssessmentModules;
 
   public static SingleTrainingResponse fromDomain(Training training) {
@@ -33,7 +33,7 @@ public class SingleTrainingResponse {
     response.postalCode = training.getAddressPostalCode();
     response.city = training.getAddressCity();
     response.trainers = training.getTrainers().stream().map(TrainerResponse::fromDomain).collect(Collectors.toSet());
-    response.attendees = training.getAttendees();
+    response.attendees = training.getAttendees().stream().map(AttendeeDto::fromDomain).collect(Collectors.toSet());
     response.technicalAssessmentModules = TechnicalAssessmentModuleResponse.fromDomain(training.getTechnicalAssessmentStructure().getModules());
     return response;
   }

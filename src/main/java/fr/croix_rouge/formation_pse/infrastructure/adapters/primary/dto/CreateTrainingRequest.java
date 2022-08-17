@@ -3,6 +3,7 @@ package fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;
 import lombok.Builder;

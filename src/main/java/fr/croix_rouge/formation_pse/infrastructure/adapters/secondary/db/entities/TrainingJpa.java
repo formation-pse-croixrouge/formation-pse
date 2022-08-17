@@ -12,9 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +23,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
@@ -67,12 +66,14 @@ public class TrainingJpa {
   )
   private Set<PseUserJpa> trainers;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name="TRAININGS_ATTENDEES")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "training", cascade = CascadeType.ALL)
   private Set<AttendeeJpa> attendees;
 
   public static TrainingJpa fromDomain(Training training) {
-    return TrainingJpa.builder()
+    Set<AttendeeJpa> attendeesJpa = training.getAttendees().stream()
+      .map(AttendeeJpa::fromDomain)
+      .collect(Collectors.toSet());
+    TrainingJpa trainingJpa = TrainingJpa.builder()
       .id(training.getId())
       .startDate(training.getStartDate())
       .endDate(training.getEndDate())
@@ -87,11 +88,10 @@ public class TrainingJpa {
         .collect(Collectors.toSet())
       )
       .creator(PseUserJpa.fromDomain(training.getCreatedBy()))
-      .attendees(training.getAttendees().stream()
-        .map(attendee -> new AttendeeJpa(attendee.getFirstName(), attendee.getLastName(), TechnicalAssessmentEvaluationJpa.fromDomain(attendee.getTechnicalAssessmentEvaluation())))
-        .collect(Collectors.toSet())
-      )
+      .attendees(attendeesJpa)
       .build();
+    attendeesJpa.forEach(attendeeJpa -> attendeeJpa.setTraining(trainingJpa));
+    return trainingJpa;
   }
 
   public Training toDomain() {
@@ -99,7 +99,7 @@ public class TrainingJpa {
       .map(attendeeJpa -> {
         TechnicalAssessmentEvaluationJpa evaluationJpa = attendeeJpa.getTechnicalAssessmentEvaluation();
         TechnicalAssessmentEvaluation evaluation = evaluationJpa.toDomain();
-        return new Attendee(attendeeJpa.getFirstName(), attendeeJpa.getLastName(), evaluation);
+        return new Attendee(attendeeJpa.getId(), attendeeJpa.getFirstName(), attendeeJpa.getLastName(), evaluation);
       })
       .collect(Collectors.toSet());
     return Training.builder()

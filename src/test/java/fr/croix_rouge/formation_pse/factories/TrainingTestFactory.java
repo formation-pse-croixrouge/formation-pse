@@ -6,9 +6,11 @@ import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,16 +34,16 @@ public class TrainingTestFactory {
         .label("3 rue de l'Ours")
         .build()
       )
-      .trainers(Set.of(Trainer.builder()
+      .trainers(new HashSet<>(Arrays.asList(Trainer.builder()
           .nivol("A_NIVOL123")
           .firstName("John")
           .lastName("Doe")
-        .build()))
-      .attendees(Set.of(Attendee.builder()
+        .build())))
+      .attendees(new HashSet<>(Arrays.asList(Attendee.builder()
           .firstName("Victor")
           .lastName("Rideau")
           .technicalAssessmentEvaluation(anEmptyEvaluation)
-        .build()))
+        .build())))
       .startDate(LocalDate.parse("2021-01-01"))
       .endDate(LocalDate.parse("2021-12-31"));
   }

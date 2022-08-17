@@ -36,8 +36,11 @@ public class FakeTrainingRepository implements TrainingRepository {
 
   @Override
   public void update(Training training) {
-    throw new RuntimeException("not implemented");
-
+    Training trainingToUpdate = trainings.stream()
+      .filter(training1 -> Objects.equals(training1.getId(), training.getId()))
+      .findFirst().get();
+    trainings.remove(trainingToUpdate);
+    trainings.add(training);
   }
 
   @Override
@@ -67,8 +70,6 @@ public class FakeTrainingRepository implements TrainingRepository {
   }
 }
 
-// TODO : sauvegarde dans les nouveaux attendees lors de l'update
-// une rubrique peut être : { title: "Organisation des secours", skills: [{id : 3, label : "Une superbe évaluation"}]}
 // TODO : Lors du remplissage du formulaire d'un attendee, récupérer structure depuis attendee
 // TODO : Lors de la sauvegarde, mettre à jour depuis attendee
 

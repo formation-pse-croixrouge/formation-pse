@@ -7,7 +7,7 @@ import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
 import fr.croix_rouge.formation_pse.factories.PseUserTestFactory;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainerRepository;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.fake.FakeTrainingRepository;
 import fr.croix_rouge.formation_pse.usecases.createTraining.CreateTrainingCommand;

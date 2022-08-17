@@ -3,6 +3,7 @@ package fr.croix_rouge.formation_pse.usecases.updateTraining;
 import fr.croix_rouge.formation_pse.domain.Address;
 import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.Trainer;
+import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.AttendeeDto;
 import lombok.Builder;
 import lombok.Getter;
 

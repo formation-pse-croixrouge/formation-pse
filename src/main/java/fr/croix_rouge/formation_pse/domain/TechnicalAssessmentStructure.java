@@ -1,6 +1,5 @@
 package fr.croix_rouge.formation_pse.domain;
 
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

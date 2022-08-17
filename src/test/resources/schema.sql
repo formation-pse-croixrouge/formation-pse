@@ -12,22 +12,24 @@ create table users
 
 create table trainings
 (
-    id                             int8 not null,
-    address_city                   varchar(255),
-    address_label                  varchar(255),
-    address_postal_code            int4,
-    end_date                       date,
-    start_date                     date,
-    creator_id                     int8 not null references users,
+    id                  int8 not null,
+    address_city        varchar(255),
+    address_label       varchar(255),
+    address_postal_code int4,
+    end_date            date,
+    start_date          date,
+    creator_id          int8 not null references users,
     primary key (id)
 );
 
-create table trainings_attendees
+create table attendees
 (
-    training_jpa_id      int8 not null references trainings,
-    first_name           varchar(255),
-    last_name            varchar(255),
-    technical_assessment_evaluation json
+    id                              int8 not null,
+    training_id                 int8 not null references trainings,
+    first_name                      varchar(255),
+    last_name                       varchar(255),
+    technical_assessment_evaluation json,
+    primary key (id)
 );
 
 create table trainings_users

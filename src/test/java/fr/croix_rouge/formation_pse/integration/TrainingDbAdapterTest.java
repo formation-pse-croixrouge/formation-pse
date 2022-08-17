@@ -5,7 +5,7 @@ import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentEvaluation;
 import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentStructure;
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDao;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.TrainingDbAdapter;
 import fr.croix_rouge.formation_pse.infrastructure.adapters.secondary.db.entities.AddressJpa;
@@ -58,7 +58,12 @@ class TrainingDbAdapterTest {
     PseUserJpa aUser = createUser();
     List<TechnicalAssessmentEvaluationModuleJpa> evaluationModuleJpas = List.of(
       new TechnicalAssessmentEvaluationModuleJpa("a title", List.of(new GradeJpa("do stuff", true))));
-    return TrainingJpa.builder()
+    Set<AttendeeJpa> attendeeJpas = Set.of(AttendeeJpa.builder()
+      .firstName("Victor")
+      .lastName("Lodes")
+      .technicalAssessmentEvaluation(new TechnicalAssessmentEvaluationJpa(evaluationModuleJpas))
+      .build());
+    TrainingJpa trainingJpa = TrainingJpa.builder()
       .startDate(LocalDate.parse("2021-01-01"))
       .endDate(LocalDate.parse("2021-12-31"))
       .creator(aUser)
@@ -68,12 +73,10 @@ class TrainingDbAdapterTest {
         .city("Paris")
         .build())
       .trainers(Set.of(aUser))
-      .attendees(Set.of(AttendeeJpa.builder()
-        .firstName("Victor")
-        .lastName("Lodes")
-        .technicalAssessmentEvaluation(new TechnicalAssessmentEvaluationJpa(evaluationModuleJpas))
-        .build()))
+      .attendees(attendeeJpas)
       .endDate(LocalDate.now()).build();
+    attendeeJpas.forEach(attendeeJpa -> attendeeJpa.setTraining(trainingJpa));
+    return trainingJpa;
   }
 
   private PseUserJpa createUser() {

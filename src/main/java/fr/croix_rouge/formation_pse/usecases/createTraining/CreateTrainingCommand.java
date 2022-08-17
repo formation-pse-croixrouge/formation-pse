@@ -5,7 +5,7 @@ import fr.croix_rouge.formation_pse.domain.Attendee;
 import fr.croix_rouge.formation_pse.domain.PseUser;
 import fr.croix_rouge.formation_pse.domain.Trainer;
 import fr.croix_rouge.formation_pse.domain.Training;
-import fr.croix_rouge.formation_pse.infrastructure.adapters.primary.dto.TechnicalAssessmentModule;
+import fr.croix_rouge.formation_pse.domain.TechnicalAssessmentModule;
 import lombok.Builder;
 
 import java.time.LocalDate;
